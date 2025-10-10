@@ -1,0 +1,1019 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}{{ user.first_name }} - پروفایل{% endblock title %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "پروفایل کاربری | سامانه سازمانی" %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --border: #e9ecef;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 0.7rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            color: var(--white);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 0.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .user-menu:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            object-fit: cover;
+        }
+        
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            padding: 6rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 70%;
+            height: 150%;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(114, 9, 183, 0.03) 100%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .page-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        /* Sidebar */
+        .profile-sidebar {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .profile-avatar {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 600;
+            object-fit: cover;
+            border: 3px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+        
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .profile-role {
+            color: var(--gray);
+            font-size: 0.9rem;
+            background: var(--light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(67, 97, 238, 0.05);
+            color: var(--primary);
+        }
+        
+        .sidebar-menu a i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .content-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        /* Personal Info */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .info-value {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .star {
+            color: #ddd;
+        }
+        
+        .star.filled {
+            color: #ffc107;
+        }
+        
+        .edit-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        /* Form Styles */
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.visible {
+            display: block;
+        }
+        
+        .info-grid.hidden {
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .form-input.with-icon {
+            padding-left: 3rem;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+        
+        .messages {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+        
+        .alert.error {
+            background: #dc3545;
+        }
+        
+        .alert.success {
+            background: #28a745;
+        }
+        
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border);
+        }
+        
+        /* Business Items */
+        .businesses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .business-item {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .business-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .business-item h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .business-item p {
+            color: var(--gray);
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .business-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+        
+        .business-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .status-inactive {
+            background: rgba(108, 117, 125, 0.1);
+            color: var(--gray);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .businesses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .page-header-content {
+                padding: 0 1rem;
+            }
+            
+            .main-container {
+                padding: 2rem 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .profile-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">{% trans "پروفایل کاربری" %}</h1>
+            <p class="page-subtitle">{% trans "مدیریت اطلاعات شخصی و تنظیمات حساب" %}</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="profile-sidebar">
+            <div class="profile-avatar">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" class="avatar-large" alt="{% trans 'تصویر پروفایل' %}">
+                {% else %}
+                    <div class="avatar-large">{{ user.first_name|slice:":1" }}</div>
+                {% endif %}
+                <h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
+                <div class="profile-role">{% if user.is_staff %}{% trans "کاربر ادمین" %}{% else %}{% trans "کاربر عادی" %}{% endif %}</div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number">{{ total_businesses }}</div>
+                    <div class="stat-label">{% trans "شغل‌ها" %}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ total_views }}</div>
+                    <div class="stat-label">{% trans "بازدیدها" %}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ actual_rating|floatformat:1 }}</div>
+                    <div class="stat-label">{% trans "امتیاز" %}</div>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'accounts:profile' %}" class="active"><i class="fas fa-user"></i> {% trans "اطلاعات شخصی" %}</a></li>
+                <li><a href="#"><i class="fas fa-store"></i> {% trans "شغل‌های من" %}</a></li>
+                <li><a href="#"><i class="fas fa-crown"></i> {% trans "پلن‌های فعال" %}</a></li>
+                <li><a href="#"><i class="fas fa-heart"></i> {% trans "مورد علاقه‌ها" %}</a></li>
+                <li><a href="#"><i class="fas fa-comment"></i> {% trans "نظرات من" %}</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> {% trans "تنظیمات" %}</a></li>
+                <li><a href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> {% trans "خروج" %}</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="profile-content">
+            <!-- Personal Information -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        {% trans "اطلاعات شخصی" %}
+                    </h2>
+                    <button type="button" class="btn btn-outline edit-btn" onclick="toggleEditForm()">
+                        <i class="fas fa-edit"></i>
+                        {% trans "ویرایش پروفایل" %}
+                    </button>
+                </div>
+                
+                <div id="info-display" class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">{% trans "نام کامل" %}</div>
+                        <div class="info-value">{{ user.first_name }} {{ user.last_name }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "نام کاربری" %}</div>
+                        <div class="info-value">{{ user.username }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "ایمیل" %}</div>
+                        <div class="info-value">{{ user.email }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "شماره تماس" %}</div>
+                        <div class="info-value">{{ user.phone_number|default:_('وارد نشده') }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "تاریخ عضویت" %}</div>
+                        <div class="info-value">{{ user.date_joined|date:"d F Y" }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "شهر" %}</div>
+                        <div class="info-value">{{ user.city|default:_('وارد نشده') }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "امتیاز" %}</div>
+                        <div class="info-value">
+                            <div class="rating-stars">
+                                {% with rating=actual_rating %}
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= rating %}
+                                            <i class="fas fa-star filled"></i>
+                                        {% else %}
+                                            <i class="fas fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                                <span style="margin-right: 5px; color: var(--primary); font-weight: 600;">
+                                    ({{ actual_rating|floatformat:1 }})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">{% trans "وضعیت حساب" %}</div>
+                        <div class="info-value">
+                            {% if user.is_active %}
+                                <span style="color: #28a745; font-weight: 600;">
+                                    <i class="fas fa-check-circle"></i>
+                                    {% trans "فعال" %}
+                                </span>
+                            {% else %}
+                                <span style="color: #dc3545; font-weight: 600;">
+                                    <i class="fas fa-times-circle"></i>
+                                    {% trans "غیرفعال" %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="edit-form" class="auth-form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label" for="id_first_name">{% trans "نام" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.first_name }}
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        {% for error in form.first_name.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="id_last_name">{% trans "نام خانوادگی" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.last_name }}
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        {% for error in form.last_name.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="id_email">{% trans "ایمیل" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.email }}
+                            <div class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                        {% for error in form.email.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="id_phone_number">{% trans "شماره تماس" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.phone_number }}
+                            <div class="input-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                        </div>
+                        {% for error in form.phone_number.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="id_city">{% trans "شهر" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.city }}
+                            <div class="input-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                        </div>
+                        {% for error in form.city.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="id_profile_picture">{% trans "تصویر پروفایل" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.profile_picture }}
+                        </div>
+                        {% for error in form.profile_picture.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                        {% if user.profile_picture %}
+                            <div style="margin-top: 0.5rem;">
+                                <img src="{{ user.profile_picture.url }}" alt="{% trans 'تصویر فعلی' %}" style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            {% trans "ذخیره تغییرات" %}
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="toggleEditForm()">
+                            <i class="fas fa-times"></i>
+                            {% trans "لغو" %}
+                        </button>
+                    </div>
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </section>
+            
+            <!-- My Businesses -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-store"></i>
+                        {% trans "شغل‌های من" %}
+                    </h2>
+                    <a href="{% url 'send:business_register' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        {% trans "افزودن شغل جدید" %}
+                    </a>
+                </div>
+                {% if user_businesses %}
+                    <div class="businesses-grid">
+                        {% for business in user_businesses %}
+                            <div class="business-item">
+                                <h3>{{ business.name }}</h3>
+                                <p><strong>{% trans "دسته‌بندی:" %}</strong> {{ business.category }}</p>
+                                <p><strong>{% trans "آدرس:" %}</strong> {{ business.address|truncatewords:10 }}</p>
+                                {% if business.description %}
+                                    <p><strong>{% trans "توضیحات:" %}</strong> {{ business.description|truncatewords:15 }}</p>
+                                {% endif %}
+                                <div class="business-meta">
+                                    <span>
+                                        <i class="fas fa-calendar"></i>
+                                        {{ business.created_at|date:"Y/m/d" }}
+                                    </span>
+                                    <span class="business-status {% if business.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if business.is_active %}
+                                            {% trans "فعال" %}
+                                        {% else %}
+                                            {% trans "غیرفعال" %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-store empty-icon"></i>
+                        <p>{% trans "هنوز شغلی ثبت نشده" %}</p>
+                        <a href="{% url 'send:business_register' %}" class="btn btn-primary" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i>
+                            {% trans "ثبت اولین شغل" %}
+                        </a>
+                    </div>
+                {% endif %}
+            </section>
+            
+            <!-- My Plans -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-crown"></i>
+                        {% trans "پلن‌های فعال" %}
+                    </h2>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-plus"></i>
+                        {% trans "خرید پلن جدید" %}
+                    </button>
+                </div>
+                <div class="empty-state">
+                    <i class="fas fa-crown empty-icon"></i>
+                    <p>{% trans "هیچ پلن فعالی وجود ندارد" %}</p>
+                    <button class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-shopping-cart"></i>
+                        {% trans "خرید پلن" %}
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Toggle edit form
+        function toggleEditForm() {
+            const infoDisplay = document.getElementById('info-display');
+            const editForm = document.getElementById('edit-form');
+            
+            if (editForm.classList.contains('visible')) {
+                editForm.classList.remove('visible');
+                infoDisplay.classList.remove('hidden');
+            } else {
+                editForm.classList.add('visible');
+                infoDisplay.classList.add('hidden');
+            }
+        }
+
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            const messages = document.querySelector('.messages');
+            if (messages) {
+                messages.style.display = 'none';
+            }
+        }, 5000);
+
+        // Initialize form state
+        document.addEventListener('DOMContentLoaded', function() {
+            const editForm = document.getElementById('edit-form');
+            const infoDisplay = document.getElementById('info-display');
+            
+            // Ensure form is hidden on page load
+            editForm.classList.remove('visible');
+            infoDisplay.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,790 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}{{ business.name }}{% endblock title %}
+
+{% block content %}<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "ثبت شغل جدید | سامانه سازمانی" %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --border: #e9ecef;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        
+        .form-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .image-upload-section {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .image-upload-section:hover {
+            border-color: var(--primary);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 120px;
+            border: 2px solid var(--border);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-remove {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .hours-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .hour-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover {
+            border-color: var(--primary);
+        }
+        
+        .service-item.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .service-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .service-item.selected .service-checkbox {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .service-item.selected .service-checkbox::after {
+            content: '✓';
+            color: var(--white);
+            font-size: 0.8rem;
+        }
+        
+        .preview-section {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+        }
+        
+        .preview-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .preview-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .preview-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border-radius: 20px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .preview-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .preview-category {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .preview-body {
+            padding: 1.5rem;
+        }
+        
+        .preview-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .preview-gallery img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+        }
+        
+        .info-item i {
+            color: var(--primary);
+            width: 20px;
+        }
+        
+        .preview-services {
+            margin-top: 1.5rem;
+        }
+        
+        .services-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .service-tag {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+        
+        .messages {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+        
+        .alert.error {
+            background: #dc3545;
+        }
+        
+        .alert.success {
+            background: #28a745;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-section {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hour-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div class="container">
+        <div class="form-content">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-store"></i>
+                        {% trans "اطلاعات اصلی شغل" %}
+                    </h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.name.id_for_label }}">{% trans "نام شغل" %} *</label>
+                            {{ form.name }}
+                            {% for error in form.name.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.category.id_for_label }}">{% trans "دسته‌بندی اصلی" %} *</label>
+                            {{ form.category }}
+                            {% for error in form.category.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.phone.id_for_label }}">{% trans "شماره تماس" %} *</label>
+                            {{ form.phone }}
+                            {% for error in form.phone.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.instagram.id_for_label }}">{% trans "آدرس اینستاگرام" %}</label>
+                            {{ form.instagram }}
+                            {% for error in form.instagram.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label" for="{{ form.description.id_for_label }}">{% trans "توضیحات شغل" %} *</label>
+                            {{ form.description }}
+                            {% for error in form.description.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-images"></i>
+                        {% trans "تصاویر شغل" %}
+                    </h2>
+                    
+                    <div class="image-upload-section" onclick="document.getElementById('imageUpload').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <p>{% trans "برای آپلود تصاویر کلیک کنید یا فایل‌ها را اینجا رها کنید" %}</p>
+                        <small>{% trans "فرمت‌های مجاز: JPG, PNG, GIF (حداکثر ۵ مگابایت)" %}</small>
+                        {{ image_form.image }}
+                    </div>
+                    
+                    <div class="image-preview-grid" id="imagePreview"></div>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {% trans "اطلاعات تماس" %}
+                    </h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label" for="{{ form.address.id_for_label }}">{% trans "آدرس کامل" %} *</label>
+                            {{ form.address }}
+                            {% for error in form.address.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.city.id_for_label }}">{% trans "شهر" %} *</label>
+                            {{ form.city }}
+                            {% for error in form.city.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="{{ form.district.id_for_label }}">{% trans "منطقه" %}</label>
+                            {{ form.district }}
+                            {% for error in form.district.errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-clock"></i>
+                        {% trans "ساعات کاری" %}
+                    </h2>
+                    
+                    <div class="hours-grid">
+                        <div class="hour-row">
+                            <div>{% trans "شنبه - چهارشنبه" %}</div>
+                            <select class="form-select" name="weekday_start">
+                                {% for time in hours_choices.weekday.start %}
+                                    <option>{{ time }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="form-select" name="weekday_end">
+                                {% for time in hours_choices.weekday.end %}
+                                    <option>{{ time }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="hour-row">
+                            <div>{% trans "پنجشنبه" %}</div>
+                            <select class="form-select" name="thursday_start">
+                                {% for time in hours_choices.thursday.start %}
+                                    <option>{{ time }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="form-select" name="thursday_end">
+                                {% for time in hours_choices.thursday.end %}
+                                    <option>{{ time }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="hour-row">
+                            <div>{% trans "جمعه" %}</div>
+                            <div style="grid-column: 2 / -1; color: var(--gray);">
+                                <input type="checkbox" name="friday_closed" id="friday_closed">
+                                <label for="friday_closed">{% trans "تعطیل" %}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-concierge-bell"></i>
+                        {% trans "خدمات ارائه شده" %}
+                    </h2>
+                    
+            {% for value, label, icon in service_choices %}
+                <div class="service-item" data-service="{{ value }}">
+                    <input type="checkbox" name="services" value="{{ value }}" class="service-checkbox" id="service_{{ value }}">
+                    <label for="service_{{ value }}">
+                        {{ label }} <i class="{{ icon }}"></i>
+                    </label>
+                </div>
+            {% endfor %}
+
+                </div>
+                
+                <div class="form-actions">
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-outline">
+                        <i class="fas fa-times"></i>
+                        {% trans "انصراف" %}
+                    </a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-check"></i>
+                        {% trans "ثبت شغل" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-card">
+                <div class="preview-header">
+                    <div class="preview-logo">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="preview-name" id="previewName">{{ form.name.value|default:_('نام شغل') }}</div>
+                    <div class="preview-category" id="previewCategory">{% if form.category.value %}{{ form.category.value.name }}{% else %}{% trans 'دسته‌بندی' %}{% endif %}</div>
+                </div>
+                
+                <div class="preview-body">
+                    <div class="preview-gallery" id="imagePreview"></div>
+                    
+                    <div class="preview-info">
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="previewAddress">{{ form.address.value|default:_('آدرس') }}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <span id="previewPhone">{{ form.phone.value|default:_('شماره تماس') }}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fab fa-instagram"></i>
+                            <span id="previewInstagram">{{ form.instagram.value|default:_('اینستاگرام') }}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="previewHours">{% trans "ساعات کاری" %}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-description">
+                        <p id="previewDescription">{{ form.description.value|default:_('توضیحات شغل') }}</p>
+                    </div>
+                    
+                    <div class="preview-services">
+                        <h4>{% trans "خدمات" %}:</h4>
+                        <div class="services-tags" id="previewServices"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: var(--radius); padding: 1rem; color: #856404;">
+                <h4 style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-lightbulb"></i>
+                    {% trans "نکته مهم" %}
+                </h4>
+                <p style="font-size: 0.9rem; margin: 0;">{% trans "پس از ثبت اطلاعات، شغل شما پس از تأیید نهایی در سامانه نمایش داده خواهد شد. زمان تأیید حداکثر ۲۴ ساعت کاری می‌باشد." %}</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+    <script>
+        document.getElementById('id_name').addEventListener('input', function() {
+            document.getElementById('previewName').textContent = this.value || '{% trans "نام شغل" %}';
+        });
+        
+        document.getElementById('id_category').addEventListener('change', function() {
+            document.getElementById('previewCategory').textContent = this.options[this.selectedIndex].text || '{% trans "دسته‌بندی" %}';
+        });
+        
+        document.getElementById('id_phone').addEventListener('input', function() {
+            document.getElementById('previewPhone').textContent = this.value || '{% trans "شماره تماس" %}';
+        });
+        
+        document.getElementById('id_instagram').addEventListener('input', function() {
+            const value = this.value;
+            document.getElementById('previewInstagram').textContent = value ? `@${value}` : '{% trans "اینستاگرام" %}';
+        });
+        
+        document.getElementById('id_address').addEventListener('input', function() {
+            document.getElementById('previewAddress').textContent = this.value || '{% trans "آدرس" %}';
+        });
+        
+        document.getElementById('id_description').addEventListener('input', function() {
+            document.getElementById('previewDescription').textContent = this.value || '{% trans "توضیحات شغل" %}';
+        });
+        
+        function updateHoursPreview() {
+            const weekdayStart = document.getElementsByName('weekday_start')[0].value;
+            const weekdayEnd = document.getElementsByName('weekday_end')[0].value;
+            const thursdayStart = document.getElementsByName('thursday_start')[0].value;
+            const thursdayEnd = document.getElementsByName('thursday_end')[0].value;
+            const fridayClosed = document.getElementById('friday_closed').checked;
+            
+            const hoursText = `{% trans "شنبه-چهارشنبه" %}: ${weekdayStart}-${weekdayEnd} | {% trans "پنجشنبه" %}: ${thursdayStart}-${thursdayEnd} | {% trans "جمعه" %}: ${fridayClosed ? '{% trans "تعطیل" %}' : '{% trans "باز" %}'} `;
+            document.getElementById('previewHours').textContent = hoursText;
+        }
+        
+        document.getElementsByName('weekday_start')[0].addEventListener('change', updateHoursPreview);
+        document.getElementsByName('weekday_end')[0].addEventListener('change', updateHoursPreview);
+        document.getElementsByName('thursday_start')[0].addEventListener('change', updateHoursPreview);
+        document.getElementsByName('thursday_end')[0].addEventListener('change', updateHoursPreview);
+        document.getElementById('friday_closed').addEventListener('change', updateHoursPreview);
+        
+        const serviceItems = document.querySelectorAll('.service-item');
+        const previewServices = document.getElementById('previewServices');
+        
+        serviceItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+                updateServicesPreview();
+            });
+        });
+        
+        function updateServicesPreview() {
+            const selectedServices = document.querySelectorAll('.service-item input:checked');
+            previewServices.innerHTML = '';
+            
+            selectedServices.forEach(service => {
+                const serviceName = service.nextElementSibling.textContent;
+                const tag = document.createElement('span');
+                tag.className = 'service-tag';
+                tag.textContent = serviceName;
+                previewServices.appendChild(tag);
+            });
+        }
+        
+        document.getElementById('id_image').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.className = 'preview-remove';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', function() {
+                        previewItem.remove();
+                    });
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(removeBtn);
+                    preview.appendChild(previewItem);
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        updateHoursPreview();
+        updateServicesPreview();
+    </script>
+</body>
+</html>
