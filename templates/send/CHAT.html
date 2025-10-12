@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static i18n %}
-{% block title %}{{ business.name }}{% endblock title %}
+{% block title %}{% trans "چت | سامانه سازمانی" %}{% endblock title %}
 
 {% block content %}
 <style>
     :root {
-        --primary-color: #667eea;
-        --secondary-color: #846b9eff;
+        --primary-color: #4361ee;
+        --secondary-color: #3a0ca3;
         --accent-color: #ff6b6b;
         --light-bg: #f8f9fa;
         --dark-bg: #2d3748;
@@ -15,86 +15,45 @@
         --success-color: #48bb78;
         --warning-color: #ed8936;
     }
-.chat-container-wrapper {
-    width: 100%; /* عرض کامل صفحه */
-    margin: 30px 0; /* حذف margin افقی، حفظ margin عمودی */
-    padding: 0 15px;
-    height: auto; /* اجازه می‌دهد ارتفاع توسط chat-fullpage کنترل شود */
-    display: flex;
-    flex-direction: column;
-}
 
-.chat-fullpage {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    font-family: 'Vazir', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-dark);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    height: 80vh; /* حفظ ارتفاع فعلی */
-    min-height: 600px;
-    width: 100%; /* عرض کامل ظرف والد */
-    display: flex;
-    flex-direction: column;
-}
-
-.app-container {
-    height: 100%;
-    width: 100%; /* اطمینان از پر شدن عرض */
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.messages-container {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding: 20px;
-    background: #f5f7fa;
-    background-image: 
-        radial-gradient(circle at 25px 25px, rgba(255,255,255,0.3) 2%, transparent 40%),
-        radial-gradient(circle at 75px 75px, rgba(255,255,255,0.2) 2%, transparent 40%);
-    background-size: 100px 100px;
-    min-height: 0;
-}
-
-@media (max-width: 768px) {
     .chat-container-wrapper {
-        padding: 0 10px;
-        margin: 20px 0; /* حفظ margin عمودی برای موبایل */
+        width: 100%;
+        margin: 20px 0;
+        padding: 0 15px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
     }
-    
+
     .chat-fullpage {
-        height: 85vh; /* حفظ ارتفاع فعلی در موبایل */
-        border-radius: 15px;
-        width: 100%; /* عرض کامل در موبایل */
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-dark);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        height: 80vh;
+        min-height: 600px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
-}
-    
-    .chat-header-custom {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 15px 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 100;
-        flex-shrink: 0;
+
+    .app-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
     }
-    
-    .logo {
-        font-weight: 700;
-        font-size: 1.5rem;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
+
     .main-content {
         flex: 1;
         display: flex;
         overflow: hidden;
         padding: 20px;
     }
-    
+
     .chat-container {
         height: 100%;
         background: white;
@@ -102,8 +61,9 @@
         overflow: hidden;
         display: flex;
         width: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
-    
+
     .sidebar {
         width: 350px;
         background: var(--light-bg);
@@ -113,7 +73,7 @@
         transition: all 0.3s ease;
         flex-shrink: 0;
     }
-    
+
     .chat-area {
         flex: 1;
         height: 100%;
@@ -122,7 +82,7 @@
         position: relative;
         min-width: 0;
     }
-    
+
     .conversation-header {
         padding: 20px;
         background: white;
@@ -133,13 +93,13 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         flex-shrink: 0;
     }
-    
+
     .user-info {
         display: flex;
         align-items: center;
         gap: 12px;
     }
-    
+
     .user-avatar {
         width: 45px;
         height: 45px;
@@ -152,7 +112,7 @@
         font-weight: bold;
         font-size: 18px;
     }
-    
+
     .user-status {
         display: flex;
         align-items: center;
@@ -160,14 +120,14 @@
         font-size: 0.85rem;
         color: var(--text-light);
     }
-    
+
     .status-dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
         background: var(--success-color);
     }
-    
+
     .messages-container {
         flex: 1;
         overflow-y: auto;
@@ -179,26 +139,26 @@
         background-size: 100px 100px;
         min-height: 0;
     }
-    
+
     .message {
         margin-bottom: 20px;
         animation: fadeIn 0.3s ease-in;
         display: flex;
     }
-    
+
     .message-sent {
         justify-content: flex-end;
     }
-    
+
     .message-received {
         justify-content: flex-start;
     }
-    
+
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    
+
     .message-bubble {
         padding: 12px 18px;
         border-radius: 18px;
@@ -207,48 +167,48 @@
         position: relative;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
-    
+
     .sent-bubble {
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: white;
         border-bottom-right-radius: 5px;
     }
-    
+
     .received-bubble {
         background: white;
         border: 1px solid #e9ecef;
         border-bottom-left-radius: 5px;
     }
-    
+
     .message-time {
         font-size: 0.75rem;
         color: rgba(255, 255, 255, 0.8);
         margin-top: 5px;
         text-align: left;
     }
-    
+
     .received-bubble .message-time {
         color: var(--text-light);
     }
-    
+
     .input-area {
         padding: 20px;
         background: white;
         border-top: 1px solid #e9ecef;
         flex-shrink: 0;
     }
-    
+
     .message-form {
         display: flex;
         gap: 12px;
         align-items: flex-end;
     }
-    
+
     .input-wrapper {
         flex: 1;
         position: relative;
     }
-    
+
     .message-input {
         border-radius: 25px;
         padding: 12px 50px 12px 20px;
@@ -257,13 +217,15 @@
         height: 50px;
         transition: all 0.3s;
         width: 100%;
+        font-family: inherit;
     }
-    
+
     .message-input:focus {
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        outline: none;
     }
-    
+
     .input-actions {
         position: absolute;
         left: 15px;
@@ -272,7 +234,7 @@
         display: flex;
         gap: 8px;
     }
-    
+
     .action-btn {
         width: 36px;
         height: 36px;
@@ -284,13 +246,14 @@
         border: none;
         color: var(--text-light);
         transition: all 0.2s;
+        cursor: pointer;
     }
-    
+
     .action-btn:hover {
         background: #e0e0e0;
         color: var(--text-dark);
     }
-    
+
     .send-btn {
         width: 50px;
         height: 50px;
@@ -302,15 +265,16 @@
         border: none;
         color: white;
         transition: all 0.3s;
-        box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
         flex-shrink: 0;
+        cursor: pointer;
     }
-    
+
     .send-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
     }
-    
+
     .conversation-item {
         padding: 15px;
         border-radius: 15px;
@@ -322,17 +286,17 @@
         align-items: center;
         gap: 12px;
     }
-    
+
     .conversation-item:hover {
         background: #e9ecef;
     }
-    
+
     .conversation-item.active {
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: white;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
     }
-    
+
     .conversation-avatar {
         width: 50px;
         height: 50px;
@@ -346,12 +310,12 @@
         font-size: 18px;
         flex-shrink: 0;
     }
-    
+
     .conversation-info {
         flex: 1;
         min-width: 0;
     }
-    
+
     .conversation-name {
         font-weight: 600;
         margin-bottom: 4px;
@@ -359,7 +323,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    
+
     .conversation-preview {
         font-size: 0.85rem;
         color: var(--text-light);
@@ -367,11 +331,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    
+
     .active .conversation-preview {
         color: rgba(255, 255, 255, 0.8);
     }
-    
+
     .conversation-meta {
         display: flex;
         flex-direction: column;
@@ -379,16 +343,16 @@
         gap: 5px;
         flex-shrink: 0;
     }
-    
+
     .conversation-time {
         font-size: 0.75rem;
         color: var(--text-light);
     }
-    
+
     .active .conversation-time {
         color: rgba(255, 255, 255, 0.8);
     }
-    
+
     .unread-badge {
         background: var(--accent-color);
         color: white;
@@ -398,7 +362,7 @@
         min-width: 20px;
         text-align: center;
     }
-    
+
     .file-preview {
         max-width: 200px;
         max-height: 150px;
@@ -406,39 +370,50 @@
         margin-top: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-    
-    .mobile-sidebar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 320px;
-        height: 100%;
-        background: white;
-        z-index: 1050;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+
+    .sidebar-header {
+        padding: 20px 15px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e9ecef;
+        flex-shrink: 0;
     }
-    
-    .mobile-sidebar.show {
-        transform: translateX(0);
+
+    .search-box {
+        margin: 15px;
+        position: relative;
     }
-    
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
+
+    .search-input {
+        border-radius: 20px;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #e0e0e0;
         width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1040;
-        display: none;
+        font-size: 0.9rem;
+        font-family: inherit;
     }
-    
-    .overlay.show {
-        display: block;
+
+    .search-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
     }
-    
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text-light);
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        opacity: 0.5;
+    }
+
     .business-badge {
         background: rgba(255, 255, 255, 0.2);
         padding: 4px 8px;
@@ -447,7 +422,7 @@
         margin-top: 5px;
         display: inline-block;
     }
-    
+
     .post-link {
         background: #e3f2fd;
         border: 1px solid #bbdefb;
@@ -460,96 +435,12 @@
         transition: all 0.3s ease;
         font-size: 0.85rem;
     }
-    
+
     .post-link:hover {
         background: #bbdefb;
         color: #0d47a1;
     }
-    
-    .search-box {
-        margin: 15px;
-        position: relative;
-    }
-    
-    .search-input {
-        border-radius: 20px;
-        padding: 10px 15px 10px 40px;
-        border: 1px solid #e0e0e0;
-        width: 100%;
-        font-size: 0.9rem;
-    }
-    
-    .search-icon {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-light);
-    }
-    
-    .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: var(--text-light);
-    }
-    
-    .empty-icon {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        opacity: 0.5;
-    }
-    
-    .sidebar-header {
-        padding: 20px 15px 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #e9ecef;
-        flex-shrink: 0;
-    }
-    
-    .toggle-sidebar {
-        display: none;
-    }
-    
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 320px;
-            height: 100%;
-            z-index: 1050;
-            transform: translateX(100%);
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .sidebar.show {
-            transform: translateX(0);
-        }
-        
-        .toggle-sidebar {
-            display: block;
-        }
-        
-        .main-content {
-            padding: 10px;
-        }
-        
-        .chat-container {
-            border-radius: 15px;
-        }
-        
-        .chat-fullpage {
-            height: 85vh;
-        }
-        
-        .chat-container-wrapper {
-            margin: 20px auto;
-            padding: 0 10px;
-        }
-    }
-    
+
     .typing-indicator {
         display: flex;
         align-items: center;
@@ -562,7 +453,7 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         margin-bottom: 10px;
     }
-    
+
     .typing-dot {
         width: 8px;
         height: 8px;
@@ -570,25 +461,194 @@
         background: var(--text-light);
         animation: typingAnimation 1.4s infinite ease-in-out;
     }
-    
+
     .typing-dot:nth-child(1) {
         animation-delay: 0s;
     }
-    
+
     .typing-dot:nth-child(2) {
         animation-delay: 0.2s;
     }
-    
+
     .typing-dot:nth-child(3) {
         animation-delay: 0.4s;
     }
-    
+
     @keyframes typingAnimation {
         0%, 60%, 100% {
             transform: translateY(0);
         }
         30% {
             transform: translateY(-5px);
+        }
+    }
+
+    .toggle-sidebar {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-dark);
+        cursor: pointer;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        border: 1px solid #6c757d;
+        color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: 1px solid var(--primary-color);
+    }
+
+    .btn-primary:hover {
+        background: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+        border: 1px solid #dc3545;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+        border-color: #bd2130;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .sidebar {
+            width: 300px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .chat-container-wrapper {
+            padding: 0 10px;
+            margin: 15px 0;
+        }
+        
+        .chat-fullpage {
+            height: 85vh;
+            border-radius: 15px;
+        }
+        
+        .main-content {
+            padding: 10px;
+        }
+        
+        .chat-container {
+            border-radius: 10px;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100%;
+            z-index: 1000;
+            transition: right 0.3s ease;
+        }
+        
+        .sidebar.show {
+            right: 0;
+        }
+        
+        .toggle-sidebar {
+            display: block;
+        }
+        
+        .conversation-header {
+            padding: 15px;
+        }
+        
+        .messages-container {
+            padding: 15px;
+        }
+        
+        .input-area {
+            padding: 15px;
+        }
+        
+        .message-bubble {
+            max-width: 85%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .chat-fullpage {
+            height: 90vh;
+            min-height: 500px;
+        }
+        
+        .conversation-header {
+            padding: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+        }
+        
+        .message-bubble {
+            max-width: 90%;
+            padding: 10px 14px;
+        }
+        
+        .input-area {
+            padding: 12px;
+        }
+        
+        .message-input {
+            height: 45px;
+            padding: 10px 45px 10px 15px;
+        }
+        
+        .send-btn {
+            width: 45px;
+            height: 45px;
         }
     }
 </style>
@@ -600,9 +660,9 @@
             <div class="main-content">
                 <div class="chat-container">
                     <!-- Desktop Sidebar -->
-                    <div class="sidebar show">
+                    <div class="sidebar" id="sidebar">
                         <div class="sidebar-header">
-                            <h5 class="mb-0">مکالمات</h5>
+                            <h5 style="margin: 0; font-weight: 600;">{% trans "مکالمات" %}</h5>
                             <button class="btn btn-sm btn-outline-primary">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -610,7 +670,7 @@
                         
                         <div class="search-box">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" class="search-input" placeholder="جستجو در مکالمات...">
+                            <input type="text" class="search-input" placeholder="{% trans 'جستجو در مکالمات...' %}">
                         </div>
                         
                         <div class="conversations-list">
@@ -636,7 +696,7 @@
                                             {% if is_owner %}
                                                 {{ conv.business.name }}
                                             {% else %}
-                                                آخرین پیام...
+                                                {% trans "آخرین پیام..." %}
                                             {% endif %}
                                         </div>
                                     </div>
@@ -650,7 +710,7 @@
                             {% empty %}
                                 <div class="empty-state">
                                     <i class="fas fa-comments empty-icon"></i>
-                                    <p>هیچ مکالمه‌ای وجود ندارد</p>
+                                    <p>{% trans "هیچ مکالمه‌ای وجود ندارد" %}</p>
                                 </div>
                             {% endfor %}
                         </div>
@@ -661,9 +721,9 @@
                         {% if selected_conversation %}
                             <!-- Chat Header -->
                             <div class="conversation-header">
-                                <div class="d-flex align-items-center gap-3">
-                                    <button class="btn toggle-sidebar d-md-none" onclick="toggleSidebar()">
-                                        <i class="fas fa-arrow-right"></i>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <button class="toggle-sidebar" onclick="toggleSidebar()">
+                                        <i class="fas fa-bars"></i>
                                     </button>
                                     <div class="user-avatar">
                                         {% if is_owner %}
@@ -673,7 +733,7 @@
                                         {% endif %}
                                     </div>
                                     <div class="user-info">
-                                        <h6 class="mb-0 fw-bold">
+                                        <h6 style="margin: 0; font-weight: 600;">
                                             {% if is_owner %}
                                                 {{ selected_conversation.user.username }}
                                             {% else %}
@@ -682,28 +742,18 @@
                                         </h6>
                                         <div class="user-status">
                                             <span class="status-dot"></span>
-                                            <span>آنلاین</span>
+                                            <span>{% trans "آنلاین" %}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center gap-2">
+                                <div style="display: flex; align-items: center; gap: 8px;">
                                     {% if is_owner %}
                                         <a href="{% url 'send:business_detail' selected_conversation.business.slug %}" 
                                            class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-store me-1"></i>
-                                            مشاهده پست
+                                            <i class="fas fa-store" style="margin-left: 4px;"></i>
+                                            {% trans "مشاهده پست" %}
                                         </a>
                                     {% endif %}
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle me-2"></i>اطلاعات</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell me-2"></i>بی‌صدا کردن</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-ban me-2"></i>مسدود کردن</a></li>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                             
@@ -716,39 +766,38 @@
                                                 <div class="message-text">{{ message.content }}</div>
                                             {% endif %}
                                             
-                                            <!-- نمایش لینک پست مربوطه -->
                                             {% if is_owner and message.conversation.business %}
                                                 <a href="{% url 'send:business_detail' message.conversation.business.slug %}" 
                                                    class="post-link">
-                                                    <i class="fas fa-external-link-alt me-2"></i>
-                                                    مشاهده پست: {{ message.conversation.business.name }}
+                                                    <i class="fas fa-external-link-alt" style="margin-left: 4px;"></i>
+                                                    {% trans "مشاهده پست:" %} {{ message.conversation.business.name }}
                                                 </a>
                                             {% endif %}
                                             
                                             {% if message.file %}
                                                 {% if message.file_type == 'image' %}
-                                                    <img src="{{ message.file.url }}" class="file-preview" alt="تصویر">
+                                                    <img src="{{ message.file.url }}" class="file-preview" alt="{% trans 'تصویر' %}">
                                                 {% elif message.file_type == 'video' %}
                                                     <video class="file-preview" controls>
                                                         <source src="{{ message.file.url }}" type="video/mp4">
                                                     </video>
                                                 {% else %}
-                                                    <div class="file-attachment mt-2 p-2 bg-light rounded">
-                                                        <i class="fas fa-file me-2"></i>
-                                                        <a href="{{ message.file.url }}" target="_blank" class="text-decoration-none">
-                                                            دانلود فایل
+                                                    <div style="margin-top: 8px; padding: 8px; background: var(--light-bg); border-radius: 8px;">
+                                                        <i class="fas fa-file" style="margin-left: 4px;"></i>
+                                                        <a href="{{ message.file.url }}" target="_blank" style="text-decoration: none; color: inherit;">
+                                                            {% trans "دانلود فایل" %}
                                                         </a>
                                                     </div>
                                                 {% endif %}
                                             {% endif %}
                                             
-                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
                                                 <div class="message-time">
                                                     {{ message.created_at|date:"H:i" }}
                                                 </div>
                                                 {% if is_owner and message.conversation.business %}
                                                     <span class="business-badge">
-                                                        <i class="fas fa-store me-1"></i>
+                                                        <i class="fas fa-store" style="margin-left: 2px;"></i>
                                                         {{ message.conversation.business.name }}
                                                     </span>
                                                 {% endif %}
@@ -756,16 +805,16 @@
                                         </div>
                                     </div>
                                 {% empty %}
-                                    <div class="empty-state h-100 d-flex align-items-center justify-content-center">
+                                    <div class="empty-state" style="height: 100%; display: flex; align-items: center; justify-content: center;">
                                         <div>
                                             <i class="fas fa-comments empty-icon"></i>
-                                            <h5>هنوز پیامی ارسال نشده</h5>
-                                            <p>اولین پیام را شما ارسال کنید!</p>
+                                            <h5>{% trans "هنوز پیامی ارسال نشده" %}</h5>
+                                            <p>{% trans "اولین پیام را شما ارسال کنید!" %}</p>
                                         </div>
                                     </div>
                                 {% endfor %}
                                 
-                                <!-- Typing Indicator (Hidden by default) -->
+                                <!-- Typing Indicator -->
                                 <div class="message message-received" id="typingIndicator" style="display: none;">
                                     <div class="typing-indicator">
                                         <div class="typing-dot"></div>
@@ -780,7 +829,7 @@
                                 <form id="messageForm" method="POST" enctype="multipart/form-data" class="message-form">
                                     {% csrf_token %}
                                     <div class="input-wrapper">
-                                        <textarea name="content" class="form-control message-input" placeholder="پیام خود را بنویسید..." id="messageInput" rows="1"></textarea>
+                                        <textarea name="content" class="message-input" placeholder="{% trans 'پیام خود را بنویسید...' %}" id="messageInput" rows="1"></textarea>
                                         <div class="input-actions">
                                             <label for="fileInput" class="action-btn">
                                                 <i class="fas fa-paperclip"></i>
@@ -788,31 +837,31 @@
                                             <button type="button" class="action-btn">
                                                 <i class="fas fa-smile"></i>
                                             </button>
-                                            <input type="file" name="file" id="fileInput" class="d-none" accept="image/*,video/*,.pdf,.doc,.docx">
+                                            <input type="file" name="file" id="fileInput" style="display: none;" accept="image/*,video/*,.pdf,.doc,.docx">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn send-btn">
+                                    <button type="submit" class="send-btn">
                                         <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </form>
                                 
                                 <!-- File Preview -->
-                                <div id="filePreview" class="mt-2 d-none">
-                                    <img id="previewImage" class="file-preview" alt="پیش‌نمایش">
-                                    <button class="btn btn-sm btn-danger ms-2" onclick="clearFilePreview()">
+                                <div id="filePreview" style="margin-top: 8px; display: none;">
+                                    <img id="previewImage" class="file-preview" alt="{% trans 'پیش‌نمایش' %}">
+                                    <button class="btn btn-sm btn-danger" onclick="clearFilePreview()" style="margin-right: 8px;">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
                             </div>
                         {% else %}
                             <!-- Empty State -->
-                            <div class="empty-state h-100 d-flex align-items-center justify-content-center">
+                            <div class="empty-state" style="height: 100%; display: flex; align-items: center; justify-content: center;">
                                 <div>
                                     <i class="fas fa-comments empty-icon"></i>
-                                    <h5>مکالمه‌ای انتخاب نشده</h5>
-                                    <p>لطفاً یک مکالمه را از لیست سمت راست انتخاب کنید</p>
-                                    <button class="btn btn-primary mt-3 d-md-none" onclick="toggleSidebar()">
-                                        نمایش مکالمات
+                                    <h5>{% trans "مکالمه‌ای انتخاب نشده" %}</h5>
+                                    <p>{% trans "لطفاً یک مکالمه را از لیست سمت راست انتخاب کنید" %}</p>
+                                    <button class="btn btn-primary" onclick="toggleSidebar()" style="margin-top: 12px;">
+                                        {% trans "نمایش مکالمات" %}
                                     </button>
                                 </div>
                             </div>
@@ -844,7 +893,7 @@
     
     // Toggle sidebar
     function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar');
+        const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('show');
     }
     
@@ -858,18 +907,18 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewImage.src = e.target.result;
-                preview.classList.remove('d-none');
+                preview.style.display = 'block';
             }
             reader.readAsDataURL(file);
         } else {
-            preview.classList.add('d-none');
+            preview.style.display = 'none';
         }
     });
     
     // Clear file preview
     function clearFilePreview() {
         document.getElementById('fileInput').value = '';
-        document.getElementById('filePreview').classList.add('d-none');
+        document.getElementById('filePreview').style.display = 'none';
     }
     
     // Auto-resize textarea
@@ -901,17 +950,15 @@
                 }
             });
             
-            const result = await response.json();
-            
-            if (result.status === 'success') {
+            if (response.ok) {
                 // Reload the page to show new message
                 window.location.reload();
             } else {
-                alert('خطا در ارسال پیام');
+                alert('{% trans "خطا در ارسال پیام" %}');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('خطا در ارسال پیام');
+            alert('{% trans "خطا در ارسال پیام" %}');
         } finally {
             // Re-enable button
             submitBtn.disabled = false;
@@ -922,6 +969,19 @@
     // Initial scroll to bottom
     document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom();
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.toggle-sidebar');
+            
+            if (window.innerWidth <= 768 && 
+                sidebar.classList.contains('show') && 
+                !sidebar.contains(e.target) && 
+                !toggleBtn.contains(e.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
     });
 </script>
 {% endblock content %}

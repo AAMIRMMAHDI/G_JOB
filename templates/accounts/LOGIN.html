@@ -5,100 +5,159 @@
 
 {% block content %}
 <style>
+    .auth-page {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+        background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+    }
+
     .auth-container {
         position: relative;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 40px;
-        border-radius: 30px;
-        width: 400px;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        transition: height 0.5s ease;
-        color: #333;
-        margin: 2rem auto;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 2.5rem;
+        border-radius: 25px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 20px 60px rgba(67, 97, 238, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
+        margin: 0 auto;
+    }
+
+    .auth-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 80px rgba(67, 97, 238, 0.2);
     }
 
     h2 {
         text-align: center;
-        margin-bottom: 25px;
-        color: #333;
+        margin-bottom: 2rem;
+        color: #2d3748;
         font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .form-input {
         width: 100%;
-        padding: 15px 20px;
-        margin-bottom: 20px;
-        border-radius: 25px;
-        border: 2px solid #e0e0e0;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.2rem;
+        border-radius: 15px;
+        border: 2px solid #e2e8f0;
         outline: none;
         background: white;
-        color: #333;
+        color: #2d3748;
         font-size: 1rem;
+        font-family: 'Vazirmatn', sans-serif;
         transition: all 0.3s ease;
     }
 
     .form-input:focus {
         border-color: #4361ee;
-        box-shadow: 0 0 10px rgba(67, 97, 238, 0.2);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-input::placeholder {
+        color: #a0aec0;
     }
 
     .btn {
         width: 100%;
-        padding: 15px;
-        border-radius: 25px;
+        padding: 1rem;
+        border-radius: 15px;
         border: none;
         background: linear-gradient(135deg, #4361ee, #3a0ca3);
         color: white;
-        font-weight: bold;
+        font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
         font-size: 1.1rem;
-        margin-top: 10px;
+        font-family: 'Vazirmatn', sans-serif;
+        margin-top: 0.5rem;
+        position: relative;
+        overflow: hidden;
     }
 
-    .btn:hover { 
+    .btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+    }
+
+    .btn:active {
+        transform: translateY(0);
     }
 
     .switch {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .switch p {
+        color: #718096;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
     }
 
     .switch a {
         color: #4361ee;
         text-decoration: none;
-        font-weight: bold;
+        font-weight: 600;
         transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        display: inline-block;
     }
 
     .switch a:hover {
-        text-decoration: underline;
+        color: #3a0ca3;
+        background: rgba(67, 97, 238, 0.05);
+        text-decoration: none;
     }
 
     .messages {
+        margin-bottom: 1.5rem;
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
         text-align: center;
-        margin-bottom: 20px;
-        padding: 10px;
-        border-radius: 10px;
+        font-size: 0.9rem;
+        border: 1px solid transparent;
     }
 
-    .messages .error { 
-        color: #dc3545;
-        background: rgba(220, 53, 69, 0.1);
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid rgba(220, 53, 69, 0.2);
+    .alert-error {
+        color: #e53e3e;
+        background: rgba(229, 62, 62, 0.05);
+        border-color: rgba(229, 62, 62, 0.1);
     }
 
-    .messages .success { 
-        color: #28a745;
-        background: rgba(40, 167, 69, 0.1);
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid rgba(40, 167, 69, 0.2);
+    .alert-success {
+        color: #38a169;
+        background: rgba(56, 161, 105, 0.05);
+        border-color: rgba(56, 161, 105, 0.1);
+    }
+
+    .alert-warning {
+        color: #dd6b20;
+        background: rgba(221, 107, 32, 0.05);
+        border-color: rgba(221, 107, 32, 0.1);
+    }
+
+    .alert-info {
+        color: #3182ce;
+        background: rgba(49, 130, 206, 0.05);
+        border-color: rgba(49, 130, 206, 0.1);
     }
 
     /* افکت جابجایی بین فرم‌ها */
@@ -107,196 +166,386 @@
         top: 0;
         left: 0;
         width: 100%;
-        transition: all 0.6s ease;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         opacity: 0;
-        transform: translateY(50px);
+        transform: translateX(30px);
         pointer-events: none;
-        padding: 20px;
+        padding: 2.5rem;
     }
 
     .form-wrapper.active {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
         pointer-events: auto;
-    }
-
-    .switch p {
-        color: #666;
-        margin-bottom: 10px;
+        position: relative;
     }
 
     /* استایل برای فیلدهای Django forms */
-    .form-input::placeholder {
-        color: #999;
-    }
-
-    /* استایل برای لیست خطاها */
     .errorlist {
         list-style: none;
-        color: #dc3545;
-        margin-bottom: 15px;
-        padding: 10px;
-        background: rgba(220, 53, 69, 0.1);
+        color: #e53e3e;
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+        background: rgba(229, 62, 62, 0.05);
         border-radius: 10px;
-        border: 1px solid rgba(220, 53, 69, 0.2);
+        border: 1px solid rgba(229, 62, 62, 0.1);
+        font-size: 0.9rem;
     }
 
     .errorlist li {
-        margin-bottom: 5px;
+        margin-bottom: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .errorlist li:before {
+        content: "⚠";
+        font-size: 0.8rem;
+    }
+
+    .errorlist li:last-child {
+        margin-bottom: 0;
+    }
+
+    /* دکمه بازگشت */
+    .back-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: none;
+        border: none;
+        color: #718096;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        display: none;
+    }
+
+    .back-btn:hover {
+        color: #4361ee;
+        background: rgba(67, 97, 238, 0.05);
+    }
+
+    /* نمایش دکمه بازگشت در حالت موبایل */
+    @media (max-width: 768px) {
+        .back-btn {
+            display: block;
+        }
+        
+        .auth-container {
+            padding: 2rem 1.5rem;
+            margin: 1rem;
+        }
+        
+        .form-wrapper {
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    /* انیمیشن برای دکمه */
+    @keyframes btnPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .btn-loading {
+        animation: btnPulse 1.5s ease-in-out infinite;
+    }
+
+    /* استایل برای فیلدهای خاص */
+    .password-field {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #a0aec0;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 1.2rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+        .auth-page {
+            padding: 1rem 0.5rem;
+            min-height: 70vh;
+        }
+        
+        .auth-container {
+            padding: 1.5rem 1rem;
+            border-radius: 20px;
+        }
+        
+        .form-wrapper {
+            padding: 1.5rem 1rem;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-input {
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            padding: 0.8rem;
+            font-size: 1rem;
+        }
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .auth-container {
+            background: rgba(45, 55, 72, 0.95);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-input {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #e2e8f0;
+        }
+        
+        .form-input:focus {
+            border-color: #4361ee;
+        }
+        
+        .form-input::placeholder {
+            color: #718096;
+        }
+        
+        h2 {
+            color: #e2e8f0;
+        }
+        
+        .switch p {
+            color: #a0aec0;
+        }
     }
 </style>
 
-<div class="auth-container" id="authBox">
-    {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <p class="{{ message.tags }}">{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
+<div class="auth-page">
+    <div class="auth-container" id="authBox">
+        <!-- دکمه بازگشت برای موبایل -->
+        <button class="back-btn" onclick="toggleForm('login')" id="backBtn">
+            <i class="fas fa-arrow-right"></i>
+        </button>
 
-    <!-- فرم ورود -->
-    <div id="loginForm" class="form-wrapper active">
-        <h2>{% trans "ورود به حساب" %}</h2>
-        <form method="post" action="{% url 'accounts:login' %}">
-            {% csrf_token %}
-            
-            {% if login_form.username.errors %}
-                <div class="errorlist">
-                    {% for error in login_form.username.errors %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <input type="text" name="username" class="form-input" placeholder="{% trans 'نام کاربری' %}" required>
-            
-            {% if login_form.password.errors %}
-                <div class="errorlist">
-                    {% for error in login_form.password.errors %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <input type="password" name="password" class="form-input" placeholder="{% trans 'رمز عبور' %}" required>
-            
-            {% if login_form.non_field_errors %}
-                <div class="errorlist">
-                    {% for error in login_form.non_field_errors %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            
-            <button type="submit" class="btn">{% trans "ورود" %}</button>
-        </form>
-        <div class="switch">
-            <p>{% trans "حساب ندارید؟" %} 
-                <a href="#" onclick="toggleForm('register')">{% trans "ثبت‌نام کنید" %}</a>
-            </p>
-        </div>
-    </div>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <!-- فرم ثبت‌نام -->
-    <div id="registerForm" class="form-wrapper">
-        <h2>{% trans "ثبت‌نام" %}</h2>
-        <form method="post" action="{% url 'accounts:register' %}">
-            {% csrf_token %}
-            
-            {% for field in register_form %}
-                {% if field.errors %}
+        <!-- فرم ورود -->
+        <div id="loginForm" class="form-wrapper active">
+            <h2>{% trans "ورود به حساب" %}</h2>
+            <form method="post" action="{% url 'accounts:login' %}" id="loginFormElement">
+                {% csrf_token %}
+                
+                {% if login_form.username.errors %}
                     <div class="errorlist">
-                        {% for error in field.errors %}
-                            {{ error }}
+                        {% for error in login_form.username.errors %}
+                            <li>{{ error }}</li>
                         {% endfor %}
                     </div>
                 {% endif %}
                 
-                {% if field.name == 'username' %}
-                    <input type="text" name="{{ field.name }}" class="form-input" placeholder="{% trans 'نام کاربری' %}" required>
-                {% elif field.name == 'email' %}
-                    <input type="email" name="{{ field.name }}" class="form-input" placeholder="{% trans 'ایمیل' %}" required>
-                {% elif field.name == 'first_name' %}
-                    <input type="text" name="{{ field.name }}" class="form-input" placeholder="{% trans 'نام کامل' %}">
-                {% elif field.name == 'phone_number' %}
-                    <input type="tel" name="{{ field.name }}" class="form-input" placeholder="{% trans 'شماره تلفن' %}">
-                {% elif field.name == 'password1' %}
-                    <input type="password" name="{{ field.name }}" class="form-input" placeholder="{% trans 'رمز عبور' %}" required>
-                {% elif field.name == 'password2' %}
-                    <input type="password" name="{{ field.name }}" class="form-input" placeholder="{% trans 'تکرار رمز عبور' %}" required>
-                {% else %}
-                    {{ field }}
-                {% endif %}
-            {% endfor %}
-            
-            {% if register_form.non_field_errors %}
-                <div class="errorlist">
-                    {% for error in register_form.non_field_errors %}
-                        {{ error }}
-                    {% endfor %}
+                <div class="form-group">
+                    <input type="text" name="username" class="form-input" placeholder="{% trans 'نام کاربری یا ایمیل' %}" required
+                           value="{{ login_form.username.value|default:'' }}">
                 </div>
-            {% endif %}
-            
-            <button type="submit" class="btn">{% trans "ثبت‌نام" %}</button>
-        </form>
-        <div class="switch">
-            <p>{% trans "قبلاً ثبت‌نام کرده‌اید؟" %}
+                
+                {% if login_form.password.errors %}
+                    <div class="errorlist">
+                        {% for error in login_form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <div class="form-group password-field">
+                    <input type="password" name="password" class="form-input" placeholder="{% trans 'رمز عبور' %}" required
+                           id="loginPassword">
+                    <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                
+                {% if login_form.non_field_errors %}
+                    <div class="errorlist">
+                        {% for error in login_form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="btn" id="loginBtn">
+                    {% trans "ورود" %}
+                </button>
+            </form>
+            <div class="switch">
+                <p>{% trans "حساب ندارید؟" %}</p>
+                <a href="#" onclick="toggleForm('register')">{% trans "ثبت‌نام کنید" %}</a>
+            </div>
+        </div>
+
+        <!-- فرم ثبت‌نام -->
+        <div id="registerForm" class="form-wrapper">
+            <h2>{% trans "ثبت‌نام" %}</h2>
+            <form method="post" action="{% url 'accounts:register' %}" id="registerFormElement">
+                {% csrf_token %}
+                
+                {% for field in register_form %}
+                    {% if field.errors %}
+                        <div class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="form-group {% if field.name in 'password1,password2' %}password-field{% endif %}">
+                        {% if field.name == 'username' %}
+                            <input type="text" name="{{ field.name }}" class="form-input" placeholder="{% trans 'نام کاربری' %}" required
+                                   value="{{ field.value|default:'' }}">
+                        {% elif field.name == 'email' %}
+                            <input type="email" name="{{ field.name }}" class="form-input" placeholder="{% trans 'ایمیل' %}" required
+                                   value="{{ field.value|default:'' }}">
+                        {% elif field.name == 'first_name' %}
+                            <input type="text" name="{{ field.name }}" class="form-input" placeholder="{% trans 'نام کامل' %}"
+                                   value="{{ field.value|default:'' }}">
+                        {% elif field.name == 'phone_number' %}
+                            <input type="tel" name="{{ field.name }}" class="form-input" placeholder="{% trans 'شماره تلفن' %}"
+                                   value="{{ field.value|default:'' }}">
+                        {% elif field.name == 'password1' %}
+                            <input type="password" name="{{ field.name }}" class="form-input" placeholder="{% trans 'رمز عبور' %}" required
+                                   id="registerPassword1">
+                            <button type="button" class="toggle-password" onclick="togglePassword('registerPassword1')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        {% elif field.name == 'password2' %}
+                            <input type="password" name="{{ field.name }}" class="form-input" placeholder="{% trans 'تکرار رمز عبور' %}" required
+                                   id="registerPassword2">
+                            <button type="button" class="toggle-password" onclick="togglePassword('registerPassword2')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                {% if register_form.non_field_errors %}
+                    <div class="errorlist">
+                        {% for error in register_form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="btn" id="registerBtn">
+                    {% trans "ثبت‌نام" %}
+                </button>
+            </form>
+            <div class="switch">
+                <p>{% trans "قبلاً ثبت‌نام کرده‌اید؟" %}</p>
                 <a href="#" onclick="toggleForm('login')">{% trans "ورود کنید" %}</a>
-            </p>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-function toggleForm(target) {
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const authBox = document.getElementById('authBox');
+    function toggleForm(target) {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const backBtn = document.getElementById('backBtn');
+        const authBox = document.getElementById('authBox');
 
-    if (target === 'register') {
-        loginForm.classList.remove('active');
-        registerForm.classList.add('active');
-        authBox.style.height = registerForm.scrollHeight + 80 + 'px';
-    } else {
-        registerForm.classList.remove('active');
-        loginForm.classList.add('active');
-        authBox.style.height = loginForm.scrollHeight + 80 + 'px';
+        if (target === 'register') {
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+            backBtn.style.display = 'block';
+            authBox.style.height = registerForm.scrollHeight + 'px';
+        } else {
+            registerForm.classList.remove('active');
+            loginForm.classList.add('active');
+            backBtn.style.display = 'none';
+            authBox.style.height = loginForm.scrollHeight + 'px';
+        }
     }
-}
 
-window.onload = function() {
-    const activeForm = document.querySelector('.form-wrapper.active');
-    document.getElementById('authBox').style.height = activeForm.scrollHeight + 80 + 'px';
-    
-    // اضافه کردن placeholder به فیلدهایی که ممکن است توسط Django render شده باشند
-    const usernameField = document.querySelector('input[name="username"]');
-    const passwordField = document.querySelector('input[name="password"]');
-    const password1Field = document.querySelector('input[name="password1"]');
-    const password2Field = document.querySelector('input[name="password2"]');
-    const emailField = document.querySelector('input[name="email"]');
-    const firstNameField = document.querySelector('input[name="first_name"]');
-    const phoneField = document.querySelector('input[name="phone_number"]');
-    
-    if (usernameField && !usernameField.placeholder) {
-        usernameField.placeholder = '{% trans "نام کاربری" %}';
+    function togglePassword(inputId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleBtn = passwordInput.nextElementSibling;
+        const icon = toggleBtn.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     }
-    if (passwordField && !passwordField.placeholder) {
-        passwordField.placeholder = '{% trans "رمز عبور" %}';
-    }
-    if (password1Field && !password1Field.placeholder) {
-        password1Field.placeholder = '{% trans "رمز عبور" %}';
-    }
-    if (password2Field && !password2Field.placeholder) {
-        password2Field.placeholder = '{% trans "تکرار رمز عبور" %}';
-    }
-    if (emailField && !emailField.placeholder) {
-        emailField.placeholder = '{% trans "ایمیل" %}';
-    }
-    if (firstNameField && !firstNameField.placeholder) {
-        firstNameField.placeholder = '{% trans "نام کامل" %}';
-    }
-    if (phoneField && !phoneField.placeholder) {
-        phoneField.placeholder = '{% trans "شماره تلفن" %}';
-    }
-};
+
+    // افزودن loading state به دکمه‌ها
+    document.getElementById('loginFormElement').addEventListener('submit', function() {
+        const btn = document.getElementById('loginBtn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "در حال ورود..." %}';
+        btn.classList.add('btn-loading');
+        btn.disabled = true;
+    });
+
+    document.getElementById('registerFormElement').addEventListener('submit', function() {
+        const btn = document.getElementById('registerBtn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "در حال ثبت‌نام..." %}';
+        btn.classList.add('btn-loading');
+        btn.disabled = true;
+    });
+
+    window.onload = function() {
+        const activeForm = document.querySelector('.form-wrapper.active');
+        document.getElementById('authBox').style.height = activeForm.scrollHeight + 'px';
+        
+        // تنظیم خودکار ارتفاع بر اساس محتوا
+        const authBox = document.getElementById('authBox');
+        const observer = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const activeForm = document.querySelector('.form-wrapper.active');
+                if (activeForm) {
+                    authBox.style.height = activeForm.scrollHeight + 'px';
+                }
+            }
+        });
+        
+        observer.observe(authBox);
+    };
+
+    // بستن فرم ثبت‌نام با کلیک روی دکمه بازگشت در موبایل
+    document.getElementById('backBtn').addEventListener('click', function() {
+        toggleForm('login');
+    });
 </script>
 {% endblock content %}
