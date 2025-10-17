@@ -118,7 +118,7 @@
     <!-- ================= HEADER ================= -->
     <header class="header">
         <div class="header-container">
-            <a href="{% url 'accounts:profile' %}" class="logo"><i class="fas fa-cube"></i> <span class="logo-text">سامانه سازمانی</span></a>
+            <a href="{% url 'accounts:profile' %}" class="logo"><i class="fas fa-cube"></i> <span class="logo-text"></span></a>
             <div class="nav-tabs">
                 <a href="{% url 'send:business_list' %}" class="nav-tab"><i class="fas fa-building"></i><span>کسب‌وکارها</span></a>
                 <a href="{% url 'root:about' %}" class="nav-tab"><i class="fas fa-info-circle"></i><span>درباره ما</span></a>
@@ -139,12 +139,10 @@
     <!-- ================= FOOTER ================= -->
     <footer class="footer">
         <ul class="footer-links">
-            <li><a href="{% url 'accounts:profile' %}">خانه</a></li>
             <li><a href="{% url 'send:business_list' %}">کسب‌وکارها</a></li>
             <li><a href="{% url 'root:about' %}">درباره ما</a></li>
             <li><a href="{% url 'root:contact' %}">تماس با ما</a></li>
-            <li><a href="#">شرایط استفاده</a></li>
-            <li><a href="#">حریم خصوصی</a></li>
+
         </ul>
         <div class="copyright">تمامی حقوق برای سامانه سازمانی محفوظ است © ۱۴۰۳</div>
     </footer>

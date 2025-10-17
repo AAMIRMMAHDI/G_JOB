@@ -15,7 +15,9 @@
         --gray: #6c757d;
         --border: #e9ecef;
         --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        --radius: 16px;
+        --radius: 10px;
+        --transition: all 0.3s ease;
+        --font-family: 'Vazir', 'Segoe UI', sans-serif;
     }
     
     .business-register-container {
@@ -24,39 +26,40 @@
         padding: 1rem;
         display: grid;
         grid-template-columns: 1fr 400px;
-        gap: 2rem;
+        gap: 1.2rem;
     }
     
     .form-section {
         background: var(--white);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+        padding: 1rem;
+        margin-bottom: 0.8rem;
     }
     
     .section-title {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.8rem;
         color: var(--dark);
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.3rem;
     }
     
     .section-title i {
         color: var(--primary);
+        font-size: 1rem;
     }
     
     .form-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.2rem;
+        gap: 0.8rem;
     }
     
     .form-group {
-        margin-bottom: 1.2rem;
+        margin-bottom: 0.8rem;
     }
     
     .form-group.full-width {
@@ -65,40 +68,41 @@
     
     .form-label {
         display: block;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
         font-weight: 500;
         color: var(--dark);
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     
     .form-input, .form-select, .form-textarea {
         width: 100%;
-        padding: 0.8rem;
-        border: 2px solid var(--border);
-        border-radius: 8px;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
+        padding: 0.6rem;
+        border: 1.5px solid var(--border);
+        border-radius: 5px;
+        font-size: 0.8rem;
+        transition: var(--transition);
         background: var(--white);
+        font-family: var(--font-family);
     }
     
     .form-input:focus, .form-select:focus, .form-textarea:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
     }
     
     .form-textarea {
-        min-height: 100px;
+        min-height: 70px;
         resize: vertical;
     }
     
     .image-upload-section {
         border: 2px dashed var(--border);
         border-radius: var(--radius);
-        padding: 1.5rem;
+        padding: 1rem;
         text-align: center;
-        transition: all 0.3s ease;
-        margin-bottom: 1.2rem;
+        transition: var(--transition);
+        margin-bottom: 0.8rem;
         cursor: pointer;
     }
     
@@ -108,24 +112,24 @@
     }
     
     .upload-icon {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
         color: var(--gray);
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.5rem;
     }
     
     .image-preview-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 0.8rem;
-        margin-top: 1.2rem;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 0.5rem;
+        margin-top: 0.8rem;
     }
     
     .preview-item {
         position: relative;
-        border-radius: 8px;
+        border-radius: 5px;
         overflow: hidden;
-        height: 100px;
-        border: 2px solid var(--border);
+        height: 70px;
+        border: 1.5px solid var(--border);
     }
     
     .preview-item img {
@@ -136,49 +140,49 @@
     
     .preview-remove {
         position: absolute;
-        top: 5px;
-        left: 5px;
+        top: 3px;
+        left: 3px;
         background: rgba(0, 0, 0, 0.7);
         color: var(--white);
-        width: 22px;
-        height: 22px;
+        width: 18px;
+        height: 18px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        font-size: 0.7rem;
+        font-size: 0.55rem;
         border: none;
     }
     
     .hours-grid {
         display: grid;
-        gap: 1rem;
+        gap: 0.6rem;
     }
     
     .hour-row {
         display: grid;
-        grid-template-columns: 120px 1fr 1fr;
-        gap: 1rem;
+        grid-template-columns: 90px 1fr 1fr;
+        gap: 0.6rem;
         align-items: center;
     }
     
     .services-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 0.8rem;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.5rem;
     }
     
     .service-item {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.8rem;
-        border: 2px solid var(--border);
-        border-radius: 8px;
+        gap: 0.3rem;
+        padding: 0.6rem;
+        border: 1.5px solid var(--border);
+        border-radius: 5px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
+        transition: var(--transition);
+        font-size: 0.8rem;
     }
     
     .service-item:hover {
@@ -191,10 +195,10 @@
     }
     
     .service-checkbox {
-        width: 18px;
-        height: 18px;
-        border: 2px solid var(--border);
-        border-radius: 4px;
+        width: 14px;
+        height: 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 3px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -209,12 +213,12 @@
     .service-item.selected .service-checkbox::after {
         content: '✓';
         color: var(--white);
-        font-size: 0.7rem;
+        font-size: 0.55rem;
     }
     
     .preview-section {
         position: sticky;
-        top: 6rem;
+        top: 4rem;
         height: fit-content;
     }
     
@@ -223,135 +227,135 @@
         border-radius: var(--radius);
         box-shadow: var(--shadow);
         overflow: hidden;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.8rem;
     }
     
     .preview-header {
         background: linear-gradient(135deg, var(--primary), var(--accent));
         color: var(--white);
-        padding: 1.5rem;
+        padding: 1rem;
         text-align: center;
     }
     
     .preview-logo {
-        width: 70px;
-        height: 70px;
+        width: 50px;
+        height: 50px;
         background: var(--white);
-        border-radius: 16px;
-        margin: 0 auto 1rem;
+        border-radius: 10px;
+        margin: 0 auto 0.6rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem;
+        font-size: 1.3rem;
         color: var(--primary);
     }
     
     .preview-name {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
     }
     
     .preview-category {
         opacity: 0.9;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     
     .preview-body {
-        padding: 1.2rem;
+        padding: 0.8rem;
     }
     
     .preview-gallery {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-        margin-bottom: 1.2rem;
+        gap: 0.3rem;
+        margin-bottom: 0.8rem;
     }
     
     .preview-gallery img {
         width: 100%;
-        height: 70px;
+        height: 50px;
         object-fit: cover;
-        border-radius: 6px;
+        border-radius: 5px;
     }
     
     .preview-info {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 0.5rem;
     }
     
     .info-item {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.3rem;
         color: var(--gray);
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     
     .info-item i {
         color: var(--primary);
-        width: 18px;
+        width: 14px;
         flex-shrink: 0;
     }
     
     .preview-services {
-        margin-top: 1.2rem;
+        margin-top: 0.8rem;
     }
     
     .services-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
+        gap: 0.3rem;
+        margin-top: 0.3rem;
     }
     
     .service-tag {
         background: rgba(67, 97, 238, 0.1);
         color: var(--primary);
-        padding: 0.3rem 0.6rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
+        padding: 0.15rem 0.4rem;
+        border-radius: 8px;
+        font-size: 0.65rem;
     }
     
     .form-actions {
         display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
+        gap: 0.6rem;
+        justify-content: center;
+        margin-top: 0.8rem;
+        padding-top: 0.8rem;
         border-top: 1px solid var(--border);
     }
     
     .btn {
-        padding: 0.8rem 1.5rem;
-        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        border-radius: 5px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         border: none;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.3rem;
         text-decoration: none;
     }
     
     .btn-primary {
         background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: var(--white);
-        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        box-shadow: 0 3px 8px rgba(67, 97, 238, 0.3);
     }
     
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        box-shadow: 0 5px 12px rgba(67, 97, 238, 0.4);
     }
     
     .btn-outline {
         background: transparent;
         color: var(--primary);
-        border: 2px solid var(--primary);
+        border: 1.5px solid var(--primary);
     }
     
     .btn-outline:hover {
@@ -360,8 +364,8 @@
     
     .error {
         color: #dc3545;
-        font-size: 0.8rem;
-        margin-top: 0.5rem;
+        font-size: 0.7rem;
+        margin-top: 0.3rem;
         text-align: right;
     }
     
@@ -369,113 +373,272 @@
         background: #fff3cd;
         border: 1px solid #ffeaa7;
         border-radius: var(--radius);
-        padding: 1rem;
+        padding: 0.6rem;
         color: #856404;
     }
     
     .tip-box h4 {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
+        gap: 0.3rem;
+        font-size: 0.8rem;
     }
     
     .tip-box p {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         margin: 0;
-        line-height: 1.5;
+        line-height: 1.3;
     }
 
     /* Responsive Design */
     @media (max-width: 1024px) {
         .business-register-container {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 0.8rem;
+            padding: 0.6rem;
         }
-        
+
         .preview-section {
             position: static;
             order: -1;
+            margin-bottom: 0.8rem;
+        }
+
+        .preview-card {
+            padding: 0.6rem;
         }
     }
-    
+
     @media (max-width: 768px) {
         .business-register-container {
-            padding: 0.5rem;
-            gap: 1rem;
+            padding: 0.4rem;
+            gap: 0.6rem;
         }
-        
+
         .form-section {
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 0.6rem;
+            margin-bottom: 0.6rem;
+            border-radius: 8px;
         }
-        
+
         .form-grid {
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 0.6rem;
         }
-        
+
         .hour-row {
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
+            grid-template-columns: 80px 1fr;
+            gap: 0.5rem;
+            align-items: center;
         }
-        
+
+        .hour-row > div:first-child {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
         .services-container {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.4rem;
         }
-        
+
         .form-actions {
-            flex-direction: column;
-        }
-        
-        .btn {
-            width: 100%;
+            flex-direction: row;
+            gap: 0.5rem;
             justify-content: center;
         }
-        
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            flex: 1;
+        }
+
         .image-preview-grid {
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 0.4rem;
         }
-        
+
         .preview-item {
-            height: 80px;
-        }
-        
-        .preview-gallery img {
             height: 60px;
+        }
+
+        .preview-gallery img {
+            height: 45px;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            gap: 0.3rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .image-upload-section {
+            padding: 0.6rem;
+        }
+
+        .upload-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .preview-header {
+            padding: 0.8rem;
+        }
+
+        .preview-logo {
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+
+        .preview-name {
+            font-size: 1rem;
+        }
+
+        .preview-category {
+            font-size: 0.75rem;
+        }
+
+        .preview-body {
+            padding: 0.6rem;
+        }
+
+        .preview-gallery {
+            gap: 0.3rem;
+        }
+
+        .info-item {
+            font-size: 0.75rem;
+            gap: 0.3rem;
+        }
+
+        .info-item i {
+            width: 14px;
+            font-size: 0.8rem;
+        }
+
+        .service-tag {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+        }
+
+        .tip-box {
+            padding: 0.6rem;
+            font-size: 0.75rem;
+        }
+
+        .tip-box h4 {
+            font-size: 0.75rem;
+            gap: 0.3rem;
+        }
+
+        .tip-box p {
+            font-size: 0.7rem;
         }
     }
-    
+
     @media (max-width: 480px) {
+        .business-register-container {
+            padding: 0.3rem;
+        }
+
+        .form-section {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
         .section-title {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
         }
-        
+
         .form-input, .form-select, .form-textarea {
-            padding: 0.7rem;
+            padding: 0.4rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
         }
-        
+
+        .form-label {
+            font-size: 0.7rem;
+        }
+
+        .hour-row {
+            grid-template-columns: 1fr;
+            gap: 0.4rem;
+        }
+
+        .services-container {
+            grid-template-columns: 1fr;
+            gap: 0.3rem;
+        }
+
         .image-upload-section {
-            padding: 1rem;
+            padding: 0.5rem;
         }
-        
+
         .upload-icon {
-            font-size: 2rem;
+            font-size: 1.4rem;
         }
-        
+
+        .preview-item {
+            height: 50px;
+        }
+
+        .preview-gallery img {
+            height: 40px;
+        }
+
         .preview-header {
-            padding: 1rem;
+            padding: 0.6rem;
         }
-        
+
         .preview-logo {
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
         }
-        
+
         .preview-name {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+        }
+
+        .preview-category {
+            font-size: 0.7rem;
+        }
+
+        .preview-body {
+            padding: 0.5rem;
+        }
+
+        .info-item {
+            font-size: 0.7rem;
+        }
+
+        .service-tag {
+            font-size: 0.6rem;
+        }
+
+        .tip-box {
+            padding: 0.5rem;
+        }
+
+        .tip-box h4 {
+            font-size: 0.7rem;
+        }
+
+        .tip-box p {
+            font-size: 0.65rem;
         }
     }
 </style>
@@ -626,7 +789,7 @@
                     
                     <div class="hour-row">
                         <div>{% trans "جمعه" %}</div>
-                        <div style="grid-column: 2 / -1; color: var(--gray); display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="grid-column: 2 / -1; color: var(--gray); display: flex; align-items: center; gap: 0.4rem;">
                             <input type="checkbox" name="friday_closed" id="friday_closed">
                             <label for="friday_closed" style="margin: 0;">{% trans "تعطیل" %}</label>
                         </div>
@@ -634,23 +797,6 @@
                 </div>
             </div>
             
-            <div class="form-section">
-                <h2 class="section-title">
-                    <i class="fas fa-concierge-bell"></i>
-                    {% trans "خدمات" %}
-                </h2>
-                
-                <div class="services-container">
-                    {% for value, label, icon in service_choices %}
-                        <div class="service-item">
-                            <input type="checkbox" name="services" value="{{ value }}" id="service-{{ value }}" style="display: none;">
-                            <input type="hidden" name="icons" value="{{ icon }}">
-                            <div class="service-checkbox"></div>
-                            <span>{% trans label %}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
             
             <div class="form-actions">
                 <a href="{% url 'accounts:profile' %}" class="btn btn-outline">
@@ -712,12 +858,13 @@
                     </div>
                 </div>
                 
-                <div class="preview-description">
+                <div class="preview-description" id="previewDescriptionWrapper">
                     <p id="previewDescription">{{ form.description.value|default:_('توضیحات شغل') }}</p>
+                    <button class="btn btn-outline" onclick="toggleDescription()" id="toggleDescriptionBtn" style="display: none;">{% trans "نمایش بیشتر" %}</button>
                 </div>
                 
                 <div class="preview-services">
-                    <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem;">{% trans "خدمات" %}:</h4>
+                    <h4 style="font-size: 0.8rem; margin-bottom: 0.3rem;">{% trans "خدمات" %}:</h4>
                     <div class="services-tags" id="previewServices"></div>
                 </div>
             </div>
@@ -758,7 +905,9 @@
         });
         
         document.getElementById('id_description').addEventListener('input', function() {
-            document.getElementById('previewDescription').textContent = this.value || '{% trans "توضیحات شغل" %}';
+            const desc = this.value || '{% trans "توضیحات شغل" %}';
+            document.getElementById('previewDescription').textContent = desc;
+            updateDescriptionToggle();
         });
         
         // Hours preview
@@ -836,7 +985,7 @@
                         const remainingImages = preview.querySelectorAll('.preview-item img');
                         galleryPreview.innerHTML = '';
                         remainingImages.forEach((img, index) => {
-                            if (index < 4) {
+                            if (index < (window.innerWidth <= 768 ? 2 : 4)) {
                                 const galleryImg = document.createElement('img');
                                 galleryImg.src = img.src;
                                 galleryPreview.appendChild(galleryImg);
@@ -848,8 +997,8 @@
                     previewItem.appendChild(removeBtn);
                     preview.appendChild(previewItem);
                     
-                    // Gallery preview (up to 4 images)
-                    if (i < 4) {
+                    // Gallery preview (up to 4 images on desktop, 2 on mobile)
+                    if (i < (window.innerWidth <= 768 ? 2 : 4)) {
                         const galleryImg = document.createElement('img');
                         galleryImg.src = e.target.result;
                         galleryPreview.appendChild(galleryImg);
@@ -860,9 +1009,38 @@
             }
         });
         
+        // Toggle description visibility in mobile
+        function toggleDescription() {
+            const desc = document.getElementById('previewDescription');
+            const btn = document.getElementById('toggleDescriptionBtn');
+            if (desc.style.display === 'none') {
+                desc.style.display = 'block';
+                btn.textContent = '{% trans "نمایش کمتر" %}';
+            } else {
+                desc.style.display = 'none';
+                btn.textContent = '{% trans "نمایش بیشتر" %}';
+            }
+        }
+        
+        function updateDescriptionToggle() {
+            const desc = document.getElementById('previewDescription');
+            const btn = document.getElementById('toggleDescriptionBtn');
+            if (window.innerWidth <= 768 && desc.textContent.length > 100) {
+                desc.style.display = 'none';
+                btn.style.display = 'block';
+            } else {
+                desc.style.display = 'block';
+                btn.style.display = 'none';
+            }
+        }
+        
         // Initialize previews
         updateHoursPreview();
         updateServicesPreview();
+        updateDescriptionToggle();
+        
+        // Update description toggle on window resize
+        window.addEventListener('resize', updateDescriptionToggle);
     });
 </script>
 {% endblock content %}

@@ -4,19 +4,40 @@
 
 {% block content %}
 <style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #3a0ca3;
+        --accent: #7209b7;
+        --success: #4cc9f0;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --white: #ffffff;
+        --gray: #6c757d;
+        --border: #e9ecef;
+        --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        --radius: 12px;
+        --font: 'Vazirmatn', sans-serif;
+    }
+
+    * {
+        margin: 0;
+        box-sizing: border-box;
+        font-family: var(--font);
+    }
+
     .profile-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 1rem;
+        padding: 0.75rem;
     }
 
     /* Page Header */
     .page-header {
         background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
-        padding: 4rem 0 2rem;
+        padding: 3rem 0 1.5rem;
         position: relative;
         overflow: hidden;
-        margin-top: -2rem;
+        margin-top: -1.5rem;
     }
 
     .page-header::before {
@@ -34,31 +55,34 @@
     .page-header-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 1.5rem;
+        padding: 0 1rem;
         position: relative;
         z-index: 1;
+        text-align: center;
     }
 
     .page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 800;
-        margin-bottom: 1rem;
+        margin-bottom: 0.8rem;
         color: var(--dark);
     }
 
     .page-subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: var(--gray);
-        margin-bottom: 2rem;
-        max-width: 600px;
+        margin-bottom: 1.5rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     /* Main Content Layout */
     .main-content-layout {
         display: grid;
         grid-template-columns: 300px 1fr;
-        gap: 2rem;
-        margin-top: 2rem;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
     }
 
     /* Sidebar */
@@ -66,55 +90,55 @@
         background: var(--white);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
-        padding: 2rem;
+        padding: 1.5rem;
         height: fit-content;
         position: sticky;
-        top: 6rem;
+        top: 5rem;
     }
 
     .profile-avatar {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
 
     .avatar-large {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
         border-radius: 50%;
         background: linear-gradient(135deg, var(--primary), var(--accent));
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1rem;
+        margin: 0 auto 0.8rem;
         color: var(--white);
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 600;
         object-fit: cover;
-        border: 3px solid var(--white);
+        border: 2px solid var(--white);
         box-shadow: var(--shadow);
     }
 
     .profile-name {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
         color: var(--dark);
     }
 
     .profile-role {
         color: var(--gray);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         background: var(--light);
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
+        padding: 0.25rem 0.7rem;
+        border-radius: 15px;
         display: inline-block;
     }
 
     .profile-stats {
         display: flex;
         justify-content: space-between;
-        margin: 2rem 0;
-        padding: 1.5rem 0;
+        margin: 1.5rem 0;
+        padding: 1rem 0;
         border-top: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
     }
@@ -124,14 +148,14 @@
     }
 
     .stat-number {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 700;
         color: var(--primary);
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.2rem;
     }
 
     .stat-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: var(--gray);
     }
 
@@ -140,19 +164,19 @@
     }
 
     .sidebar-menu li {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
 
     .sidebar-menu a {
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        padding: 0.8rem 1rem;
-        border-radius: 8px;
+        gap: 0.6rem;
+        padding: 0.7rem 0.9rem;
+        border-radius: 6px;
         color: var(--dark);
         text-decoration: none;
         transition: all 0.3s ease;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .sidebar-menu a:hover, .sidebar-menu a.active {
@@ -161,7 +185,7 @@
     }
 
     .sidebar-menu a i {
-        width: 20px;
+        width: 18px;
         text-align: center;
     }
 
@@ -169,30 +193,30 @@
     .profile-content {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .content-section {
         background: var(--white);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
-        padding: 2rem;
+        padding: 1.5rem;
     }
 
     .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     .section-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-weight: 700;
         color: var(--dark);
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
     .section-title i {
@@ -202,35 +226,41 @@
     /* Personal Info */
     .info-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
     }
 
     .info-item {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.4rem;
+        background: var(--light);
+        padding: 0.8rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
     }
 
     .info-label {
         font-weight: 500;
         color: var(--gray);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .info-value {
         font-weight: 500;
         color: var(--dark);
+        font-size: 0.9rem;
     }
 
     .rating-stars {
         display: flex;
         align-items: center;
-        gap: 0.3rem;
+        gap: 0.2rem;
     }
 
     .star {
         color: #ddd;
+        font-size: 0.9rem;
     }
 
     .star.filled {
@@ -242,12 +272,12 @@
         border: none;
         color: var(--primary);
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         display: flex;
         align-items: center;
         gap: 0.3rem;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
         transition: all 0.3s ease;
         text-decoration: none;
     }
@@ -259,6 +289,11 @@
     /* Form Styles */
     .auth-form {
         display: none;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1rem;
+        animation: fadeIn 0.3s ease-in;
     }
 
     .auth-form.visible {
@@ -270,23 +305,23 @@
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     .form-label {
         display: block;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
         font-weight: 500;
         color: var(--dark);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .form-input {
         width: 100%;
-        padding: 1rem 1.2rem;
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-size: 1rem;
+        padding: 0.6rem 0.8rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.85rem;
         transition: all 0.3s ease;
         background: var(--white);
         font-family: inherit;
@@ -295,19 +330,20 @@
     .form-input:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
     }
 
     .form-input.with-icon {
-        padding-left: 3rem;
+        padding-left: 2.2rem;
     }
 
     .input-icon {
         position: absolute;
-        left: 1rem;
+        left: 0.7rem;
         top: 50%;
         transform: translateY(-50%);
         color: var(--gray);
+        font-size: 0.8rem;
     }
 
     .input-wrapper {
@@ -316,42 +352,42 @@
 
     .error {
         color: #dc3545;
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        margin-top: 0.4rem;
         text-align: right;
     }
 
     /* Buttons */
     .btn {
-        padding: 0.8rem 1.5rem;
+        padding: 0.6rem 1.2rem;
         border-radius: 8px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
         border: none;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
         text-decoration: none;
     }
 
     .btn-primary {
         background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: var(--white);
-        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        box-shadow: 0 3px 10px rgba(67, 97, 238, 0.2);
     }
 
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
     }
 
     .btn-outline {
         background: transparent;
         color: var(--primary);
-        border: 2px solid var(--primary);
+        border: 1.5px solid var(--primary);
     }
 
     .btn-outline:hover {
@@ -359,71 +395,71 @@
     }
 
     .btn-sm {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
     }
 
     /* Empty States */
     .empty-state {
         text-align: center;
-        padding: 3rem 2rem;
+        padding: 1.5rem;
         color: var(--gray);
     }
 
     .empty-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
         color: var(--border);
     }
 
     /* Business Items */
     .businesses-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
     }
 
     .business-item {
         background: var(--light);
-        border-radius: 12px;
-        padding: 1.5rem;
+        border-radius: 10px;
+        padding: 1rem;
         border: 1px solid var(--border);
         transition: all 0.3s ease;
         position: relative;
     }
 
     .business-item:hover {
-        transform: translateY(-5px);
+        transform: translateY(-4px);
         box-shadow: var(--shadow);
     }
 
     .business-item h3 {
         color: var(--dark);
-        margin-bottom: 0.5rem;
-        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+        font-size: 1rem;
     }
 
     .business-item p {
         color: var(--gray);
-        margin-bottom: 0.3rem;
-        font-size: 0.9rem;
-        line-height: 1.5;
+        margin-bottom: 0.2rem;
+        font-size: 0.85rem;
+        line-height: 1.4;
     }
 
     .business-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 1rem;
-        padding-top: 1rem;
+        margin-top: 0.8rem;
+        padding-top: 0.8rem;
         border-top: 1px solid var(--border);
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .business-status {
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.7rem;
+        padding: 0.25rem 0.7rem;
+        border-radius: 15px;
+        font-size: 0.65rem;
         font-weight: 600;
     }
 
@@ -439,14 +475,14 @@
 
     /* Messages */
     .messages {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     .alert {
-        padding: 1rem;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        font-size: 0.85rem;
     }
 
     .alert-success {
@@ -467,6 +503,53 @@
         border: 1px solid #ffeaa7;
     }
 
+    /* Tabs for Mobile */
+    .tabs-container {
+        display: none;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 0.4rem;
+        margin-bottom: 0.8rem;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 0.5rem 0;
+    }
+
+    .tab {
+        flex: 1;
+        padding: 0.5rem;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--gray);
+        background: var(--white);
+        border-radius: var(--radius);
+        transition: all 0.2s;
+        font-size: 0.85rem;
+        min-width: 80px;
+    }
+
+    .tab.active {
+        background: var(--primary);
+        color: var(--white);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     /* Responsive Design */
     @media (max-width: 1024px) {
         .main-content-layout {
@@ -479,22 +562,66 @@
     }
 
     @media (max-width: 768px) {
+        .main-content-layout {
+            display: none;
+        }
+
+        .tabs-container {
+            display: block;
+        }
+
         .page-header {
-            padding: 3rem 0 2rem;
+            padding: 2rem 0 1rem;
         }
 
         .page-title {
-            font-size: 1.7rem;
+            font-size: 1.5rem;
         }
 
-        .info-grid {
-            grid-template-columns: 1fr;
+        .page-subtitle {
+            font-size: 0.9rem;
+        }
+
+        .profile-container {
+            padding: 0.5rem;
+        }
+
+        .content-section {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
         }
 
         .section-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 1rem;
+            gap: 0.8rem;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+            gap: 0.6rem;
+        }
+
+        .info-item {
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: linear-gradient(145deg, var(--white), #f1f3f5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .info-value {
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+
+        .rating-stars .star {
+            font-size: 0.75rem;
         }
 
         .businesses-grid {
@@ -502,40 +629,134 @@
         }
 
         .profile-stats {
-            flex-direction: column;
-            gap: 1rem;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.8rem 0;
+            padding: 0.5rem 0;
         }
 
-        .content-section {
-            padding: 1.5rem;
+        .stat-item {
+            flex: 1;
+            padding: 0.4rem;
+            background: var(--light);
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-number {
+            font-size: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+        }
+
+        .profile-avatar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            text-align: left;
+        }
+
+        .avatar-large {
+            width: 60px;
+            height: 60px;
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .profile-name {
+            font-size: 1rem;
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+        }
+
+        .auth-form {
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
+
+        .form-input {
+            padding: 0.5rem 0.7rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+        }
+
+        .form-input.with-icon {
+            padding-left: 2rem;
+        }
+
+        .input-icon {
+            font-size: 0.7rem;
+            left: 0.6rem;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .empty-icon {
+            font-size: 1.8rem;
         }
     }
 
     @media (max-width: 480px) {
+        .page-title {
+            font-size: 1.3rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.8rem;
+        }
+
         .profile-container {
-            padding: 0.5rem;
-        }
-
-        .page-header-content {
-            padding: 0 1rem;
-        }
-
-        .profile-sidebar {
-            padding: 1.5rem;
+            padding: 0.3rem;
         }
 
         .avatar-large {
-            width: 80px;
-            height: 80px;
-            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            font-size: 1rem;
         }
 
         .profile-name {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+        }
+
+        .profile-role {
+            font-size: 0.7rem;
         }
 
         .section-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
+        }
+
+        .tab {
+            font-size: 0.7rem;
+            padding: 0.4rem;
+            min-width: 60px;
+        }
+
+        .content-section {
+            padding: 0.6rem;
+        }
+
+        .stat-number {
+            font-size: 0.9rem;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
         }
     }
 </style>
@@ -627,43 +848,37 @@
                         <i class="fas fa-user-circle"></i>
                         {% trans "اطلاعات شخصی" %}
                     </h2>
-                    <button type="button" class="btn btn-outline edit-btn" onclick="toggleEditForm()">
+                    <button type="button" class="btn btn-outline edit-btn" onclick="toggleEditForm(this)">
                         <i class="fas fa-edit"></i>
                         {% trans "ویرایش پروفایل" %}
                     </button>
                 </div>
                 
-                <div id="info-display" class="info-grid">
+                <div class="info-grid" id="info-display-desktop">
                     <div class="info-item">
                         <div class="info-label">{% trans "نام کامل" %}</div>
                         <div class="info-value">{{ user.first_name }} {{ user.last_name }}</div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "نام کاربری" %}</div>
                         <div class="info-value">{{ user.username }}</div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "ایمیل" %}</div>
                         <div class="info-value">{{ user.email }}</div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "شماره تماس" %}</div>
                         <div class="info-value">{{ user.phone_number|default:_('وارد نشده') }}</div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "تاریخ عضویت" %}</div>
                         <div class="info-value">{{ user.date_joined|date:"d F Y" }}</div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "شهر" %}</div>
                         <div class="info-value">{{ user.city|default:_('وارد نشده') }}</div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "امتیاز" %}</div>
                         <div class="info-value">
@@ -683,7 +898,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="info-item">
                         <div class="info-label">{% trans "وضعیت حساب" %}</div>
                         <div class="info-value">
@@ -702,7 +916,7 @@
                     </div>
                 </div>
                 
-                <form id="edit-form" class="auth-form" method="POST" enctype="multipart/form-data">
+                <form id="edit-form-desktop" class="auth-form" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <label class="form-label" for="id_first_name">{% trans "نام" %}</label>
@@ -716,7 +930,6 @@
                             <p class="error">{{ error }}</p>
                         {% endfor %}
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="id_last_name">{% trans "نام خانوادگی" %}</label>
                         <div class="input-wrapper">
@@ -729,7 +942,6 @@
                             <p class="error">{{ error }}</p>
                         {% endfor %}
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="id_email">{% trans "ایمیل" %}</label>
                         <div class="input-wrapper">
@@ -742,7 +954,6 @@
                             <p class="error">{{ error }}</p>
                         {% endfor %}
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="id_phone_number">{% trans "شماره تماس" %}</label>
                         <div class="input-wrapper">
@@ -755,7 +966,6 @@
                             <p class="error">{{ error }}</p>
                         {% endfor %}
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="id_city">{% trans "شهر" %}</label>
                         <div class="input-wrapper">
@@ -768,7 +978,6 @@
                             <p class="error">{{ error }}</p>
                         {% endfor %}
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="id_profile_picture">{% trans "تصویر پروفایل" %}</label>
                         <div class="input-wrapper">
@@ -778,18 +987,17 @@
                             <p class="error">{{ error }}</p>
                         {% endfor %}
                         {% if user.profile_picture %}
-                            <div style="margin-top: 0.5rem;">
-                                <img src="{{ user.profile_picture.url }}" alt="{% trans 'تصویر فعلی' %}" style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
+                            <div style="margin-top: 0.4rem;">
+                                <img src="{{ user.profile_picture.url }}" alt="{% trans 'تصویر فعلی' %}" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
                             </div>
                         {% endif %}
                     </div>
-                    
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i>
                             {% trans "ذخیره تغییرات" %}
                         </button>
-                        <button type="button" class="btn btn-outline" onclick="toggleEditForm()">
+                        <button type="button" class="btn btn-outline" onclick="toggleEditForm(this)">
                             <i class="fas fa-times"></i>
                             {% trans "لغو" %}
                         </button>
@@ -820,9 +1028,9 @@
                             <div class="business-item">
                                 <h3>{{ business.name }}</h3>
                                 <p><strong>{% trans "دسته‌بندی:" %}</strong> {{ business.category }}</p>
-                                <p><strong>{% trans "آدرس:" %}</strong> {{ business.address|truncatewords:10 }}</p>
+                                <p><strong>{% trans "آدرس:" %}</strong> {{ business.address|truncatewords:8 }}</p>
                                 {% if business.description %}
-                                    <p><strong>{% trans "توضیحات:" %}</strong> {{ business.description|truncatewords:15 }}</p>
+                                    <p><strong>{% trans "توضیحات:" %}</strong> {{ business.description|truncatewords:12 }}</p>
                                 {% endif %}
                                 <div class="business-meta">
                                     <span>
@@ -844,7 +1052,7 @@
                     <div class="empty-state">
                         <i class="fas fa-store empty-icon"></i>
                         <p>{% trans "هنوز شغلی ثبت نشده" %}</p>
-                        <a href="{% url 'send:business_register' %}" class="btn btn-primary" style="margin-top: 1rem;">
+                        <a href="{% url 'send:business_register' %}" class="btn btn-primary" style="margin-top: 0.8rem;">
                             <i class="fas fa-plus"></i>
                             {% trans "ثبت اولین شغل" %}
                         </a>
@@ -867,7 +1075,7 @@
                 <div class="empty-state">
                     <i class="fas fa-crown empty-icon"></i>
                     <p>{% trans "هیچ پلن فعالی وجود ندارد" %}</p>
-                    <button class="btn btn-primary" style="margin-top: 1rem;">
+                    <button class="btn btn-primary" style="margin-top: 0.8rem;">
                         <i class="fas fa-shopping-cart"></i>
                         {% trans "خرید پلن" %}
                     </button>
@@ -875,13 +1083,294 @@
             </section>
         </main>
     </div>
+
+    <!-- Mobile Tabs -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <div class="tab active" data-tab="info">{% trans "اطلاعات شخصی" %}</div>
+            <div class="tab" data-tab="businesses">{% trans "شغل‌ها" %}</div>
+            <div class="tab" data-tab="plans">{% trans "پلن‌ها" %}</div>
+        </div>
+        <div class="tab-content active" id="info">
+            <section class="content-section">
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" class="avatar-large" alt="{% trans 'تصویر پروفایل' %}">
+                    {% else %}
+                        <div class="avatar-large">{{ user.first_name|slice:":1" }}</div>
+                    {% endif %}
+                    <div>
+                        <h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
+                        <div class="profile-role">
+                            {% if user.is_staff %}
+                                {% trans "کاربر ادمین" %}
+                            {% else %}
+                                {% trans "کاربر عادی" %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ total_businesses }}</div>
+                        <div class="stat-label">{% trans "شغل‌ها" %}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ total_views }}</div>
+                        <div class="stat-label">{% trans "بازدیدها" %}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ actual_rating|floatformat:1 }}</div>
+                        <div class="stat-label">{% trans "امتیاز" %}</div>
+                    </div>
+                </div>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        {% trans "اطلاعات شخصی" %}
+                    </h2>
+                    <button type="button" class="btn btn-outline edit-btn" onclick="toggleEditForm(this)">
+                        <i class="fas fa-edit"></i>
+                        {% trans "ویرایش پروفایل" %}
+                    </button>
+                </div>
+                <div class="info-grid" id="info-display-mobile">
+                    <div class="info-item">
+                        <div class="info-label">{% trans "نام کامل" %}</div>
+                        <div class="info-value">{{ user.first_name }} {{ user.last_name }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "نام کاربری" %}</div>
+                        <div class="info-value">{{ user.username }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "ایمیل" %}</div>
+                        <div class="info-value">{{ user.email }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "شماره تماس" %}</div>
+                        <div class="info-value">{{ user.phone_number|default:_('وارد نشده') }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "تاریخ عضویت" %}</div>
+                        <div class="info-value">{{ user.date_joined|date:"d F Y" }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "شهر" %}</div>
+                        <div class="info-value">{{ user.city|default:_('وارد نشده') }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "امتیاز" %}</div>
+                        <div class="info-value">
+                            <div class="rating-stars">
+                                {% with rating=actual_rating %}
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= rating %}
+                                            <i class="fas fa-star filled"></i>
+                                        {% else %}
+                                            <i class="fas fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                                <span style="margin-right: 5px; color: var(--primary); font-weight: 600;">
+                                    ({{ actual_rating|floatformat:1 }})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{% trans "وضعیت حساب" %}</div>
+                        <div class="info-value">
+                            {% if user.is_active %}
+                                <span style="color: #28a745; font-weight: 600;">
+                                    <i class="fas fa-check-circle"></i>
+                                    {% trans "فعال" %}
+                                </span>
+                            {% else %}
+                                <span style="color: #dc3545; font-weight: 600;">
+                                    <i class="fas fa-times-circle"></i>
+                                    {% trans "غیرفعال" %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <form id="edit-form-mobile" class="auth-form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label" for="id_first_name">{% trans "نام" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.first_name }}
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        {% for error in form.first_name.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_last_name">{% trans "نام خانوادگی" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.last_name }}
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        {% for error in form.last_name.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_email">{% trans "ایمیل" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.email }}
+                            <div class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                        {% for error in form.email.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_phone_number">{% trans "شماره تماس" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.phone_number }}
+                            <div class="input-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                        </div>
+                        {% for error in form.phone_number.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_city">{% trans "شهر" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.city }}
+                            <div class="input-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                        </div>
+                        {% for error in form.city.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_profile_picture">{% trans "تصویر پروفایل" %}</label>
+                        <div class="input-wrapper">
+                            {{ form.profile_picture }}
+                        </div>
+                        {% for error in form.profile_picture.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                        {% if user.profile_picture %}
+                            <div style="margin-top: 0.4rem;">
+                                <img src="{{ user.profile_picture.url }}" alt="{% trans 'تصویر فعلی' %}" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            {% trans "ذخیره تغییرات" %}
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="toggleEditForm(this)">
+                            <i class="fas fa-times"></i>
+                            {% trans "لغو" %}
+                        </button>
+                    </div>
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </section>
+        </div>
+        <div class="tab-content" id="businesses">
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-store"></i>
+                        {% trans "شغل‌های من" %}
+                    </h2>
+                    <a href="{% url 'send:business_register' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        {% trans "افزودن شغل جدید" %}
+                    </a>
+                </div>
+                {% if user_businesses %}
+                    <div class="businesses-grid">
+                        {% for business in user_businesses %}
+                            <div class="business-item">
+                                <h3>{{ business.name }}</h3>
+                                <p><strong>{% trans "دسته‌بندی:" %}</strong> {{ business.category }}</p>
+                                <p><strong>{% trans "آدرس:" %}</strong> {{ business.address|truncatewords:8 }}</p>
+                                {% if business.description %}
+                                    <p><strong>{% trans "توضیحات:" %}</strong> {{ business.description|truncatewords:12 }}</p>
+                                {% endif %}
+                                <div class="business-meta">
+                                    <span>
+                                        <i class="fas fa-calendar"></i>
+                                        {{ business.created_at|date:"Y/m/d" }}
+                                    </span>
+                                    <span class="business-status {% if business.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if business.is_active %}
+                                            {% trans "فعال" %}
+                                        {% else %}
+                                            {% trans "غیرفعال" %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-store empty-icon"></i>
+                        <p>{% trans "هنوز شغلی ثبت نشده" %}</p>
+                        <a href="{% url 'send:business_register' %}" class="btn btn-primary" style="margin-top: 0.8rem;">
+                            <i class="fas fa-plus"></i>
+                            {% trans "ثبت اولین شغل" %}
+                        </a>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+        <div class="tab-content" id="plans">
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-crown"></i>
+                        {% trans "پلن‌های فعال" %}
+                    </h2>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-plus"></i>
+                        {% trans "خرید پلن جدید" %}
+                    </button>
+                </div>
+                <div class="empty-state">
+                    <i class="fas fa-crown empty-icon"></i>
+                    <p>{% trans "هیچ پلن فعالی وجود ندارد" %}</p>
+                    <button class="btn btn-primary" style="margin-top: 0.8rem;">
+                        <i class="fas fa-shopping-cart"></i>
+                        {% trans "خرید پلن" %}
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
 </div>
 
 <script>
     // Toggle edit form
-    function toggleEditForm() {
-        const infoDisplay = document.getElementById('info-display');
-        const editForm = document.getElementById('edit-form');
+    function toggleEditForm(button) {
+        // پیدا کردن نزدیک‌ترین content-section که دکمه توش کلیک شده
+        const section = button.closest('.content-section');
+        const infoDisplay = section.querySelector('.info-grid');
+        const editForm = section.querySelector('.auth-form');
         
         if (editForm.classList.contains('visible')) {
             editForm.classList.remove('visible');
@@ -892,24 +1381,37 @@
         }
     }
 
-    // Auto-hide messages after 5 seconds
+    // Auto-hide messages after 4 seconds
     setTimeout(function() {
         const messages = document.querySelector('.messages');
         if (messages) {
-            messages.style.display = 'none';
+            messages.style.transition = 'opacity 0.3s ease';
+            messages.style.opacity = '0';
+            setTimeout(() => messages.style.display = 'none', 300);
         }
-    }, 5000);
+    }, 4000);
 
-    // Initialize form state
-    document.addEventListener('DOMContentLoaded', function() {
-        const editForm = document.getElementById('edit-form');
-        const infoDisplay = document.getElementById('info-display');
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
         
-        // Ensure form is hidden on page load
-        editForm.classList.remove('visible');
-        infoDisplay.classList.remove('hidden');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
 
-        // Add form input placeholders if needed
+        // Initialize form state for both desktop and mobile
+        const editForms = document.querySelectorAll('.auth-form');
+        const infoDisplays = document.querySelectorAll('.info-grid');
+        editForms.forEach(form => form.classList.remove('visible'));
+        infoDisplays.forEach(display => display.classList.remove('hidden'));
+
+        // Add form input placeholders
         const formInputs = document.querySelectorAll('.form-input');
         formInputs.forEach(input => {
             if (!input.placeholder && input.name) {
