@@ -16,15 +16,16 @@
         --border: #e9ecef;
         --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         --radius: 16px;
+        --transition: all 0.3s ease;
+        --font-family: 'Vazir', 'Segoe UI', sans-serif;
     }
     
     .business-list-container {
         max-width: 1400px;
         margin: 0 auto;
         padding: 1rem;
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 2rem;
+        display: block;
+        position: relative;
     }
     
     /* Page Header */
@@ -78,7 +79,7 @@
         display: flex;
         box-shadow: var(--shadow);
         border: 2px solid transparent;
-        transition: all 0.3s ease;
+        transition: var(--transition);
     }
     
     .search-box:focus-within {
@@ -94,132 +95,31 @@
         font-size: 1rem;
         outline: none;
         background: transparent;
+        font-family: var(--font-family);
     }
     
-    /* Filters Sidebar */
-    .filters-sidebar {
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        padding: 1.5rem;
-        height: fit-content;
-        position: sticky;
-        top: 6rem;
-    }
-    
-    .filter-section {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border);
-    }
-    
-    .filter-section:last-child {
-        margin-bottom: 0;
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-    
-    .filter-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--dark);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    .filter-reset {
-        color: var(--primary);
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-    
-    .filter-reset:hover {
-        text-decoration: underline;
-    }
-    
-    .filter-options {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-    
-    .filter-option {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        padding: 0.3rem 0;
-        font-size: 0.9rem;
-    }
-    
-    .filter-option:hover {
-        color: var(--primary);
-    }
-    
-    .filter-checkbox {
-        width: 18px;
-        height: 18px;
-        border: 2px solid var(--border);
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        flex-shrink: 0;
-    }
-    
-    .filter-option input {
-        display: none;
-    }
-    
-    .filter-option input:checked + .filter-checkbox {
-        background: var(--primary);
-        border-color: var(--primary);
-    }
-    
-    .filter-option input:checked + .filter-checkbox::after {
-        content: '✓';
+    .btn.btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: var(--white);
-        font-size: 0.8rem;
-    }
-    
-    .filter-count {
-        color: var(--gray);
-        font-size: 0.8rem;
-        margin-right: auto;
-    }
-    
-    .price-range {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .range-inputs {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .range-input {
-        flex: 1;
-        padding: 0.7rem;
-        border: 1.5px solid var(--border);
+        padding: 0.8rem 1.2rem;
         border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
         font-size: 0.9rem;
-        transition: all 0.3s ease;
-        background: var(--white);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        text-decoration: none;
+        line-height: 1;
+        white-space: nowrap;
     }
     
-    .range-input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    .btn.btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
     }
     
     /* Results Section */
@@ -256,7 +156,7 @@
         font-size: 0.9rem;
         background: var(--white);
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         min-width: 200px;
     }
     
@@ -278,7 +178,7 @@
         background: var(--white);
         border: none;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         color: var(--gray);
     }
     
@@ -292,11 +192,201 @@
         color: var(--primary);
     }
     
+    .filter-icon-btn {
+        padding: 0.7rem;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        color: var(--gray);
+        transition: var(--transition);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    .filter-icon-btn:hover {
+        background: rgba(67, 97, 238, 0.05);
+        color: var(--primary);
+    }
+    
+    /* Filters Modal (Desktop) */
+    .filters-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        max-width: 90%;
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        z-index: 1000;
+        padding: 1.5rem;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .filters-modal.open {
+        display: block;
+    }
+    
+    /* Filters Panel (Mobile) */
+    .filters-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--white);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+        padding: 1.5rem;
+    }
+    
+    .filters-panel.open {
+        right: 0;
+    }
+    
+    .filters-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+    }
+    
+    .filters-overlay.open {
+        display: block;
+    }
+    
+    .filters-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .filters-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--dark);
+    }
+    
+    .filters-close {
+        color: var(--primary);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .filters-close:hover {
+        color: var(--accent);
+    }
+    
+    .filter-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .filter-section:last-child {
+        margin-bottom: 0;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    
+    .filter-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .filter-reset {
+        color: var(--primary);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+    }
+    
+    .filter-reset:hover {
+        text-decoration: underline;
+    }
+    
+    .filter-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .filter-option {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        cursor: pointer;
+        transition: var(--transition);
+        padding: 0.3rem 0;
+        font-size: 0.9rem;
+    }
+    
+    .filter-option:hover {
+        color: var(--primary);
+    }
+    
+    .filter-checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--border);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        flex-shrink: 0;
+    }
+    
+    .filter-option input {
+        display: none;
+    }
+    
+    .filter-option input:checked + .filter-checkbox {
+        background: var(--primary);
+        border-color: var(--primary);
+    }
+    
+    .filter-option input:checked + .filter-checkbox::after {
+        content: '✓';
+        color: var(--white);
+        font-size: 0.8rem;
+    }
+    
+    .filter-count {
+        color: var(--gray);
+        font-size: 0.8rem;
+        margin-right: auto;
+    }
+    
     /* Jobs Grid */
     .jobs-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
+    }
+    
+    .jobs-grid.list-view {
+        grid-template-columns: 1fr;
     }
     
     .job-card {
@@ -304,150 +394,81 @@
         border-radius: var(--radius);
         overflow: hidden;
         box-shadow: var(--shadow);
-        transition: all 0.3s ease;
+        transition: var(--transition);
         border: 1px solid transparent;
-        display: flex;
-        flex-direction: column;
+        position: relative;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        max-width: 100%;
     }
     
     .job-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        border-color: rgba(67, 97, 238, 0.1);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary);
     }
     
     .job-image {
-        height: 180px;
+        height: 200px;
         background-size: cover;
         background-position: center;
         position: relative;
-        flex-shrink: 0;
+    }
+    
+    .job-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+        color: var(--white);
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: 0.8rem;
+        text-align: center;
+        margin: 0;
+        line-height: 1.3;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .job-info {
+        padding: 0.8rem;
+        color: var(--gray);
+        font-size: 0.9rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
     }
     
     .job-badge {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 0.8rem;
+        right: 0.8rem;
         background: var(--primary);
         color: var(--white);
         padding: 0.3rem 0.7rem;
-        border-radius: 20px;
+        border-radius: 12px;
         font-size: 0.8rem;
         font-weight: 500;
     }
     
     .job-rating {
         position: absolute;
-        bottom: 1rem;
-        right: 1rem;
+        top: 0.8rem;
+        left: 0.8rem;
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(5px);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
+        padding: 0.4rem 0.8rem;
+        border-radius: 12px;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
         font-weight: 600;
         color: var(--dark);
-        font-size: 0.9rem;
-    }
-    
-    .job-content {
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-    
-    .job-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--dark);
-        line-height: 1.3;
-    }
-    
-    .job-category {
-        color: var(--primary);
-        font-weight: 500;
-        margin-bottom: 1rem;
-        display: inline-block;
-        font-size: 0.9rem;
-    }
-    
-    .job-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--gray);
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-    }
-    
-    .job-description {
-        color: var(--gray);
-        margin-bottom: 1.5rem;
-        font-size: 0.9rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        flex-grow: 1;
-        line-height: 1.5;
-    }
-    
-    .job-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: auto;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border);
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-    
-    .job-contact {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--gray);
-        font-size: 0.9rem;
-    }
-    
-    .btn {
-        padding: 0.7rem 1.2rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: none;
-        font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: var(--white);
-        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
-    }
-    
-    .btn-outline {
-        background: transparent;
-        color: var(--primary);
-        border: 2px solid var(--primary);
-    }
-    
-    .btn-outline:hover {
-        background: rgba(67, 97, 238, 0.05);
+        font-size: 0.8rem;
     }
     
     /* Pagination */
@@ -471,7 +492,7 @@
         color: var(--dark);
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         text-decoration: none;
         font-size: 0.9rem;
     }
@@ -487,97 +508,32 @@
         color: var(--white);
     }
     
-    /* Mobile Filters */
-    .mobile-filters-btn {
-        display: none;
-        width: 100%;
-        margin-bottom: 1.5rem;
-        justify-content: center;
-    }
-    
-    .mobile-filters-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 2000;
-    }
-    
-    .mobile-filters-sidebar {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 85%;
-        max-width: 320px;
-        height: 100%;
-        background: var(--white);
-        z-index: 2001;
-        transition: right 0.3s ease;
-        overflow-y: auto;
-        padding: 1.5rem;
-    }
-    
-    .mobile-filters-sidebar.active {
-        right: 0;
-    }
-    
-    .mobile-filters-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border);
-    }
-    
-    .close-filters {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: var(--gray);
-        padding: 0.5rem;
-    }
-    
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        color: var(--gray);
-    }
-    
-    .empty-state i {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        color: var(--border);
-    }
-    
-    .empty-state h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: var(--dark);
-    }
-    
     /* Responsive Design */
-    @media (max-width: 1024px) {
-        .business-list-container {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+    @media (min-width: 1024px) {
+        .filters-panel {
+            display: none;
         }
-        
-        .filters-sidebar {
+        .jobs-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    @media (max-width: 1024px) {
+        .filters-modal {
             display: none;
         }
         
-        .mobile-filters-btn {
-            display: flex;
+        .business-list-container {
+            padding: 0.5rem;
         }
         
         .jobs-grid {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+        
+        .jobs-grid.list-view {
+            grid-template-columns: 1fr;
         }
     }
     
@@ -596,34 +552,61 @@
         }
         
         .results-header {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 1rem;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        
+        .results-count {
+            flex-shrink: 0;
+            font-size: 0.9rem;
         }
         
         .sort-options {
-            width: 100%;
-            justify-content: space-between;
+            flex-grow: 1;
+            justify-content: flex-end;
+            gap: 0.5rem;
         }
         
         .sort-select {
-            min-width: 150px;
-            flex-grow: 1;
+            min-width: 120px;
+            font-size: 0.8rem;
+            padding: 0.5rem;
         }
         
-        .jobs-grid {
-            grid-template-columns: 1fr;
+        .view-options {
+            gap: 0.3rem;
         }
         
-        .job-footer {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 1rem;
+        .view-option, .filter-icon-btn {
+            padding: 0.5rem;
+            font-size: 0.8rem;
         }
         
-        .job-footer .btn {
-            width: 100%;
-            text-align: center;
+        .job-image {
+            height: 140px;
+        }
+        
+        .job-title {
+            font-size: 1rem;
+            padding: 0.6rem;
+        }
+        
+        .job-info {
+            font-size: 0.8rem;
+            padding: 0.5rem;
+        }
+        
+        .job-badge, .job-rating {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+        }
+        
+        .btn.btn-primary {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.8rem;
+            max-width: 100px;
         }
     }
     
@@ -636,25 +619,55 @@
             padding: 0.5rem;
         }
         
+        .results-count {
+            font-size: 0.8rem;
+        }
+        
         .sort-options {
-            flex-direction: column;
-            align-items: stretch;
+            gap: 0.3rem;
         }
         
         .sort-select {
-            width: 100%;
+            min-width: 100px;
+            font-size: 0.7rem;
+            padding: 0.4rem;
         }
         
-        .view-options {
-            align-self: center;
+        .view-option, .filter-icon-btn {
+            padding: 0.4rem;
+            font-size: 0.7rem;
         }
         
         .job-image {
-            height: 150px;
+            height: 120px;
         }
         
-        .job-content {
+        .job-title {
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+        
+        .job-info {
+            font-size: 0.7rem;
+            padding: 0.4rem;
+        }
+        
+        .btn.btn-primary {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.7rem;
+            max-width: 80px;
+        }
+        
+        .filters-panel {
             padding: 1rem;
+        }
+        
+        .filters-title {
+            font-size: 1.3rem;
+        }
+        
+        .filter-title {
+            font-size: 1rem;
         }
     }
 </style>
@@ -669,81 +682,130 @@
             <input type="text" name="search" class="search-input" placeholder="{% trans 'جستجوی خدمات، ارائه‌دهندگان یا دسته‌بندی‌ها...' %}" value="{{ current_search }}">
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-search"></i>
-                {% trans "جستجو" %}
             </button>
         </form>
     </div>
 </section>
 
+<!-- Filters Modal (Desktop) -->
+<div class="filters-overlay"></div>
+<div class="filters-modal">
+    <div class="filters-header">
+        <h1 class="filters-title">{% trans "فیلترهای جستجو" %}</h1>
+        <i class="fas fa-times filters-close"></i>
+    </div>
+    
+    <form method="GET" action="{% url 'send:business_list' %}">
+        <div class="filter-section">
+            <h3 class="filter-title">
+                {% trans "دسته‌بندی‌ها" %}
+                <a href="{% url 'send:business_list' %}" class="filter-reset">{% trans "پاک کردن" %}</a>
+            </h3>
+            <div class="filter-options">
+                <label class="filter-option">
+                    <input type="checkbox" name="category[]" value="all" {% if 'all' in current_categories %}checked{% endif %}>
+                    <span class="filter-checkbox"></span>
+                    <span>{% trans "همه دسته‌بندی‌ها" %}</span>
+                    <span class="filter-count">({{ businesses.count }})</span>
+                </label>
+                {% for category in categories %}
+                    <label class="filter-option">
+                        <input type="checkbox" name="category[]" value="{{ category.slug }}" {% if category.slug in current_categories %}checked{% endif %}>
+                        <span class="filter-checkbox"></span>
+                        <span>{{ category.name }}</span>
+                        <span class="filter-count">({{ category.count }})</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <h3 class="filter-title">
+                {% trans "شهر یا منطقه" %}
+                <a href="{% url 'send:business_list' %}" class="filter-reset">{% trans "پاک کردن" %}</a>
+            </h3>
+            <div class="filter-options">
+                <label class="filter-option">
+                    <input type="checkbox" name="city[]" value="all" {% if 'all' in current_cities %}checked{% endif %}>
+                    <span class="filter-checkbox"></span>
+                    <span>{% trans "همه مناطق" %}</span>
+                    <span class="filter-count">({{ businesses.count }})</span>
+                </label>
+                {% for city in cities %}
+                    <label class="filter-option">
+                        <input type="checkbox" name="city[]" value="{{ city.city }}" {% if city.city in current_cities %}checked{% endif %}>
+                        <span class="filter-checkbox"></span>
+                        <span>{{ city.city }}</span>
+                        <span class="filter-count">({{ city.count }})</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">{% trans "اعمال فیلترها" %}</button>
+    </form>
+</div>
+
+<!-- Filters Panel (Mobile) -->
+<div class="filters-panel">
+    <div class="filters-header">
+        <h1 class="filters-title">{% trans "فیلترهای جستجو" %}</h1>
+        <i class="fas fa-times filters-close"></i>
+    </div>
+    
+    <form method="GET" action="{% url 'send:business_list' %}">
+        <div class="filter-section">
+            <h3 class="filter-title">
+                {% trans "دسته‌بندی‌ها" %}
+                <a href="{% url 'send:business_list' %}" class="filter-reset">{% trans "پاک کردن" %}</a>
+            </h3>
+            <div class="filter-options">
+                <label class="filter-option">
+                    <input type="checkbox" name="category[]" value="all" {% if 'all' in current_categories %}checked{% endif %}>
+                    <span class="filter-checkbox"></span>
+                    <span>{% trans "همه دسته‌بندی‌ها" %}</span>
+                    <span class="filter-count">({{ businesses.count }})</span>
+                </label>
+                {% for category in categories %}
+                    <label class="filter-option">
+                        <input type="checkbox" name="category[]" value="{{ category.slug }}" {% if category.slug in current_categories %}checked{% endif %}>
+                        <span class="filter-checkbox"></span>
+                        <span>{{ category.name }}</span>
+                        <span class="filter-count">({{ category.count }})</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <h3 class="filter-title">
+                {% trans "شهر یا منطقه" %}
+                <a href="{% url 'send:business_list' %}" class="filter-reset">{% trans "پاک کردن" %}</a>
+            </h3>
+            <div class="filter-options">
+                <label class="filter-option">
+                    <input type="checkbox" name="city[]" value="all" {% if 'all' in current_cities %}checked{% endif %}>
+                    <span class="filter-checkbox"></span>
+                    <span>{% trans "همه مناطق" %}</span>
+                    <span class="filter-count">({{ businesses.count }})</span>
+                </label>
+                {% for city in cities %}
+                    <label class="filter-option">
+                        <input type="checkbox" name="city[]" value="{{ city.city }}" {% if city.city in current_cities %}checked{% endif %}>
+                        <span class="filter-checkbox"></span>
+                        <span>{{ city.city }}</span>
+                        <span class="filter-count">({{ city.count }})</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">{% trans "اعمال فیلترها" %}</button>
+    </form>
+</div>
+
 <!-- Main Content -->
 <div class="business-list-container">
-    <!-- Mobile Filters Button -->
-    <button class="btn btn-outline mobile-filters-btn" id="mobileFiltersBtn">
-        <i class="fas fa-filter"></i>
-        {% trans "نمایش فیلترها" %}
-    </button>
-
-    <!-- Desktop Filters Sidebar -->
-    <aside class="filters-sidebar">
-        <form method="GET">
-            <div class="filter-section">
-                <h3 class="filter-title">
-                    {% trans "دسته‌بندی‌ها" %}
-                    <a href="{% url 'send:business_list' %}" class="filter-reset">{% trans "پاک کردن" %}</a>
-                </h3>
-                <div class="filter-options">
-                    <label class="filter-option">
-                        <input type="checkbox" name="category[]" value="all" {% if 'all' in current_categories %}checked{% endif %}>
-                        <span class="filter-checkbox"></span>
-                        <span>{% trans "همه دسته‌بندی‌ها" %}</span>
-                        <span class="filter-count">({{ businesses.count }})</span>
-                    </label>
-                    {% for category in categories %}
-                        <label class="filter-option">
-                            <input type="checkbox" name="category[]" value="{{ category.slug }}" {% if category.slug in current_categories %}checked{% endif %}>
-                            <span class="filter-checkbox"></span>
-                            <span>{{ category.name }}</span>
-                            <span class="filter-count">({{ category.count }})</span>
-                        </label>
-                    {% endfor %}
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <h3 class="filter-title">{% trans "شهر یا منطقه" %}</h3>
-                <div class="filter-options">
-                    <label class="filter-option">
-                        <input type="checkbox" name="city[]" value="all" {% if 'all' in current_cities %}checked{% endif %}>
-                        <span class="filter-checkbox"></span>
-                        <span>{% trans "همه مناطق" %}</span>
-                        <span class="filter-count">({{ businesses.count }})</span>
-                    </label>
-                    {% for city in cities %}
-                        <label class="filter-option">
-                            <input type="checkbox" name="city[]" value="{{ city.city }}" {% if city.city in current_cities %}checked{% endif %}>
-                            <span class="filter-checkbox"></span>
-                            <span>{{ city.city }}</span>
-                            <span class="filter-count">({{ city.count }})</span>
-                        </label>
-                    {% endfor %}
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <h3 class="filter-title">{% trans "محدوده قیمت" %}</h3>
-                <div class="price-range">
-                    <div class="range-inputs">
-                        <input type="text" name="price_min" class="range-input" placeholder="{% trans 'حداقل' %}">
-                        <input type="text" name="price_max" class="range-input" placeholder="{% trans 'حداکثر' %}">
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">{% trans "اعمال محدوده" %}</button>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">{% trans "اعمال فیلترها" %}</button>
-        </form>
-    </aside>
-
     <!-- Results Section -->
     <main class="results-section">
         <div class="results-header">
@@ -757,11 +819,14 @@
                 </select>
                 
                 <div class="view-options">
-                    <button class="view-option active">
+                    <button class="view-option active" data-view="grid">
                         <i class="fas fa-th"></i>
                     </button>
-                    <button class="view-option">
+                    <button class="view-option" data-view="list">
                         <i class="fas fa-list"></i>
+                    </button>
+                    <button class="filter-icon-btn">
+                        <i class="fas fa-filter"></i>
                     </button>
                 </div>
             </div>
@@ -769,33 +834,22 @@
         
         <div class="jobs-grid">
             {% for business in businesses %}
-                <div class="job-card">
-                    <div class="job-image" style="background-image: url('{% if business.images.first %}{{ business.images.first.image.url }}{% else %}https://via.placeholder.com/800x180{% endif %}')">
+                <a href="{% url 'send:business_detail' business.slug %}" class="job-card">
+                    <div class="job-image" style="background-image: url('{% if business.images.first %}{{ business.images.first.image.url }}{% else %}https://via.placeholder.com/400x200{% endif %}')">
                         {% if business.created_at|timesince:'days' < '7' %}
                             <div class="job-badge">{% trans "جدید" %}</div>
                         {% endif %}
                         <div class="job-rating">
                             <i class="fas fa-star"></i>
-                            ۴.۵
+                            {{ business.avg_rating|floatformat:1 }}
                         </div>
-                    </div>
-                    <div class="job-content">
                         <h3 class="job-title">{{ business.name }}</h3>
-                        <span class="job-category">{{ business.category.name }}</span>
-                        <div class="job-info">
-                            <i class="fas fa-map-marker-alt"></i>
-                            {{ business.city }}, {{ business.address }}
-                        </div>
-                        <p class="job-description">{{ business.description|truncatewords:20 }}</p>
-                        <div class="job-footer">
-                            <div class="job-contact">
-                                <i class="fas fa-phone"></i>
-                                {{ business.phone }}
-                            </div>
-                            <a href="{% url 'send:business_detail' business.slug %}" class="btn btn-outline">{% trans "مشاهده جزئیات" %}</a>
-                        </div>
                     </div>
-                </div>
+                    <div class="job-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ business.city }}, {{ business.address }}
+                    </div>
+                </a>
             {% empty %}
                 <div class="empty-state">
                     <i class="fas fa-search"></i>
@@ -835,125 +889,91 @@
     </main>
 </div>
 
-<!-- Mobile Filters Overlay and Sidebar -->
-<div class="mobile-filters-overlay" id="mobileFiltersOverlay"></div>
-<div class="mobile-filters-sidebar" id="mobileFiltersSidebar">
-    <div class="mobile-filters-header">
-        <h3>{% trans "فیلترها" %}</h3>
-        <button class="close-filters" id="closeFilters">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <form method="GET">
-        <div class="filter-section">
-            <h3 class="filter-title">
-                {% trans "دسته‌بندی‌ها" %}
-                <a href="{% url 'send:business_list' %}" class="filter-reset">{% trans "پاک کردن" %}</a>
-            </h3>
-            <div class="filter-options">
-                <label class="filter-option">
-                    <input type="checkbox" name="category[]" value="all" {% if 'all' in current_categories %}checked{% endif %}>
-                    <span class="filter-checkbox"></span>
-                    <span>{% trans "همه دسته‌بندی‌ها" %}</span>
-                    <span class="filter-count">({{ businesses.count }})</span>
-                </label>
-                {% for category in categories %}
-                    <label class="filter-option">
-                        <input type="checkbox" name="category[]" value="{{ category.slug }}" {% if category.slug in current_categories %}checked{% endif %}>
-                        <span class="filter-checkbox"></span>
-                        <span>{{ category.name }}</span>
-                        <span class="filter-count">({{ category.count }})</span>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="filter-section">
-            <h3 class="filter-title">{% trans "شهر یا منطقه" %}</h3>
-            <div class="filter-options">
-                <label class="filter-option">
-                    <input type="checkbox" name="city[]" value="all" {% if 'all' in current_cities %}checked{% endif %}>
-                    <span class="filter-checkbox"></span>
-                    <span>{% trans "همه مناطق" %}</span>
-                    <span class="filter-count">({{ businesses.count }})</span>
-                </label>
-                {% for city in cities %}
-                    <label class="filter-option">
-                        <input type="checkbox" name="city[]" value="{{ city.city }}" {% if city.city in current_cities %}checked{% endif %}>
-                        <span class="filter-checkbox"></span>
-                        <span>{{ city.city }}</span>
-                        <span class="filter-count">({{ city.count }})</span>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">{% trans "اعمال فیلترها" %}</button>
-    </form>
-</div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Mobile filters toggle
-        const mobileFiltersBtn = document.getElementById('mobileFiltersBtn');
-        const mobileFiltersOverlay = document.getElementById('mobileFiltersOverlay');
-        const mobileFiltersSidebar = document.getElementById('mobileFiltersSidebar');
-        const closeFilters = document.getElementById('closeFilters');
-        
-        if (mobileFiltersBtn) {
-            mobileFiltersBtn.addEventListener('click', function() {
-                mobileFiltersOverlay.style.display = 'block';
-                mobileFiltersSidebar.classList.add('active');
-            });
-        }
-        
-        if (closeFilters) {
-            closeFilters.addEventListener('click', function() {
-                mobileFiltersOverlay.style.display = 'none';
-                mobileFiltersSidebar.classList.remove('active');
-            });
-        }
-        
-        if (mobileFiltersOverlay) {
-            mobileFiltersOverlay.addEventListener('click', function() {
-                mobileFiltersOverlay.style.display = 'none';
-                mobileFiltersSidebar.classList.remove('active');
-            });
-        }
-        
-        // View options toggle
-        const viewOptions = document.querySelectorAll('.view-option');
-        viewOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                viewOptions.forEach(opt => opt.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-        
-        // Allow pressing Enter to search
-        const searchInput = document.querySelector('.search-input');
-        if (searchInput) {
-            searchInput.addEventListener('keypress', function(e) {
-                if(e.key === 'Enter') {
-                    this.closest('form').submit();
-                }
-            });
-        }
-        
-        // Filter checkbox handling
-        const categoryCheckboxes = document.querySelectorAll('input[name="category[]"]');
-        categoryCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.value === 'all' && this.checked) {
-                    categoryCheckboxes.forEach(cb => {
-                        if (cb.value !== 'all') cb.checked = false;
-                    });
-                } else if (this.value !== 'all' && this.checked) {
-                    document.querySelector('input[name="category[]"][value="all"]').checked = false;
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    // View options toggle
+    const viewOptions = document.querySelectorAll('.view-option');
+    const jobsGrid = document.querySelector('.jobs-grid');
+    viewOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            viewOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            if (this.dataset.view === 'list') {
+                jobsGrid.classList.add('list-view');
+            } else {
+                jobsGrid.classList.remove('list-view');
+            }
         });
     });
+    
+    // Allow pressing Enter to search
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                this.closest('form').submit();
+            }
+        });
+    }
+    
+    // Filters modal/panel toggle
+    const filterBtn = document.querySelector('.filter-icon-btn');
+    const filtersModal = document.querySelector('.filters-modal');
+    const filtersPanel = document.querySelector('.filters-panel');
+    const filtersOverlay = document.querySelector('.filters-overlay');
+    const closeButtons = document.querySelectorAll('.filters-close');
+    
+    filterBtn.addEventListener('click', function() {
+        if (window.innerWidth >= 1024) {
+            filtersModal.classList.add('open');
+            filtersOverlay.classList.add('open');
+        } else {
+            filtersPanel.classList.add('open');
+            filtersOverlay.classList.add('open');
+        }
+    });
+    
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filtersModal.classList.remove('open');
+            filtersPanel.classList.remove('open');
+            filtersOverlay.classList.remove('open');
+        });
+    });
+    
+    filtersOverlay.addEventListener('click', function() {
+        filtersModal.classList.remove('open');
+        filtersPanel.classList.remove('open');
+        this.classList.remove('open');
+    });
+    
+    // Filter checkbox handling
+    const categoryCheckboxes = document.querySelectorAll('input[name="category[]"]');
+    categoryCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.value === 'all' && this.checked) {
+                categoryCheckboxes.forEach(cb => {
+                    if (cb.value !== 'all') cb.checked = false;
+                });
+            } else if (this.value !== 'all' && this.checked) {
+                document.querySelector('input[name="category[]"][value="all"]').checked = false;
+            }
+        });
+    });
+
+    const cityCheckboxes = document.querySelectorAll('input[name="city[]"]');
+    cityCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.value === 'all' && this.checked) {
+                cityCheckboxes.forEach(cb => {
+                    if (cb.value !== 'all') cb.checked = false;
+                });
+            } else if (this.value !== 'all' && this.checked) {
+                document.querySelector('input[name="city[]"][value="all"]').checked = false;
+            }
+        });
+    });
+});
 </script>
 {% endblock content %}

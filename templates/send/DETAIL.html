@@ -9,979 +9,926 @@
         --secondary: #3a0ca3;
         --accent: #7209b7;
         --success: #4cc9f0;
-        --light: #f8f9fa;
         --dark: #212529;
+        --light: #f8f9fa;
         --white: #ffffff;
         --gray: #6c757d;
         --border: #e9ecef;
         --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        --radius: 16px;
+        --transition: all 0.3s ease;
+        --border-radius: 16px;
+        --font-family: 'Vazir', 'Segoe UI', sans-serif;
     }
-    
-    .business-detail-container {
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .container {
         max-width: 1400px;
         margin: 0 auto;
-        padding: 1rem;
+        padding: 0 16px;
+        direction: rtl;
+        font-family: var(--font-family);
     }
-    
-    /* Business Header */
-    .business-header {
-        background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
-        padding: 4rem 0 2rem;
+
+    .business-detail {
+        margin: 40px 0 80px;
+    }
+
+    /* Gallery */
+    .business-gallery {
         position: relative;
+        max-width: 100%;
+        margin-bottom: 32px;
+    }
+
+    .gallery-slider {
+        position: relative;
+        height: 360px;
+        border-radius: var(--border-radius);
         overflow: hidden;
-        margin-top: -2rem;
-    }
-    
-    .business-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 70%;
-        height: 150%;
-        background: linear-gradient(135deg, rgba(67, 97, 238, 0.03) 0%, rgba(114, 9, 183, 0.03) 100%);
-        border-radius: 50%;
-        z-index: 0;
-    }
-    
-    .business-header-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .business-breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-        color: var(--gray);
-        font-size: 0.9rem;
-        flex-wrap: wrap;
-    }
-    
-    .business-breadcrumb a {
-        color: var(--primary);
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    
-    .business-breadcrumb a:hover {
-        text-decoration: underline;
-    }
-    
-    .business-main-info {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        gap: 3rem;
-        align-items: start;
-    }
-    
-    .business-title-section h1 {
-        font-size: 2.2rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        color: var(--dark);
-        line-height: 1.3;
-    }
-    
-    .business-category {
-        display: inline-block;
-        background: rgba(67, 97, 238, 0.1);
-        color: var(--primary);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-weight: 500;
-        margin-bottom: 1.5rem;
-        font-size: 0.9rem;
-    }
-    
-    .business-rating {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .rating-stars {
-        display: flex;
-        gap: 0.2rem;
-        color: #ffc107;
-    }
-    
-    .rating-value {
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-    
-    .rating-count {
-        color: var(--gray);
-        font-size: 0.9rem;
-    }
-    
-    .business-description {
-        font-size: 1.1rem;
-        color: var(--dark);
-        margin-bottom: 2rem;
-        line-height: 1.7;
-    }
-    
-    .business-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.7rem;
-        margin-bottom: 2rem;
-    }
-    
-    .business-tag {
-        background: var(--white);
-        border: 1px solid var(--border);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        color: var(--gray);
-    }
-    
-    .business-sidebar {
-        background: var(--white);
-        border-radius: var(--radius);
+        background: var(--light);
         box-shadow: var(--shadow);
-        padding: 1.5rem;
-        position: sticky;
-        top: 6rem;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
     }
-    
-    .business-contact-card {
+
+    .gallery-slider::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gallery-slide {
+        flex: 0 0 100%;
+        height: 100%;
+        scroll-snap-align: center;
+        cursor: pointer;
+    }
+
+    .gallery-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .gallery-thumbnails {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 16px 0;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--gray);
+    }
+
+    .gallery-thumbnails::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .gallery-thumbnails::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+    }
+
+    .gallery-thumbnails::-webkit-scrollbar-track {
+        background: var(--gray);
+    }
+
+    .thumbnail {
+        flex: 0 0 90px;
+        height: 90px;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: var(--light);
+    }
+
+    .thumbnail.active {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px var(--primary);
+        transform: scale(1.05);
+    }
+
+    /* Business Info */
+    .business-info {
+        padding: 20px;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+    }
+
+    .business-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 16px;
+        line-height: 1.4;
+    }
+
+    .business-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 24px;
+        font-size: 0.9rem;
+        color: var(--gray);
+    }
+
+    .rating {
+        display: flex;
+        gap: 6px;
+        color: var(--success);
+    }
+
+    .rating i {
+        font-size: 1rem;
+    }
+
+    .business-category {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: var(--white);
+        padding: 6px 14px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .business-description {
+        font-size: 1rem;
+        color: var(--gray);
+        line-height: 1.8;
+        margin-bottom: 24px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        white-space: normal;
+        max-width: 100%;
+    }
+
+    .contact-actions {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    /* Tabs */
+    .business-tabs {
+        margin: 56px 0;
+    }
+
+    .tabs-header {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        background: var(--light);
+        padding: 12px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .tabs-header::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab-btn {
+        flex: 0 0 120px;
+        padding: 14px 20px;
+        background: none;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--dark);
+        cursor: pointer;
+        transition: var(--transition);
         text-align: center;
+        scroll-snap-align: center;
     }
-    
-    .business-logo {
-        width: 80px;
-        height: 80px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, var(--primary), var(--accent));
+
+    .tab-btn.active {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: var(--white);
+    }
+
+    .tab-btn:hover {
+        background: var(--gray);
+        color: var(--primary);
+    }
+
+    .tab-content {
+        display: none;
+        padding: 24px;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        font-size: 0.9rem;
+        line-height: 1.8;
+        color: var(--gray);
+        margin-top: 16px;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* Description Tab */
+    .description-content {
+        font-size: 1rem;
+        color: var(--gray);
+        line-height: 1.8;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        white-space: normal;
+        max-width: 100%;
+    }
+
+    /* Address Section */
+    .business-meta-info {
+        border-top: 2px solid var(--border);
+        padding-top: 24px;
+    }
+
+    .meta-item {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
+    .meta-title {
+        font-weight: 600;
+        min-width: 100px;
+        color: var(--dark);
+    }
+
+    .meta-value {
+        color: var(--gray);
+    }
+
+    .business-hours {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .hour-item {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+    }
+
+    .hour-item:last-child {
+        border-bottom: none;
+    }
+
+    .hour-day {
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .hour-time {
+        color: var(--gray);
+    }
+
+    .hour-closed {
+        color: #e74c3c;
+    }
+
+    .location-map {
+        height: 100px;
+        background: var(--gray);
+        border-radius: var(--border-radius);
+        margin-top: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1.5rem;
-        color: var(--white);
-        font-size: 2rem;
-    }
-    
-    .contact-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin: 1.5rem 0;
-    }
-    
-    .contact-info {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border);
-    }
-    
-    .contact-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
         color: var(--gray);
         font-size: 0.9rem;
     }
-    
-    .contact-item i {
-        color: var(--primary);
-        width: 20px;
-        flex-shrink: 0;
+
+    /* Reviews Section */
+    .review-item {
+        padding: 16px;
+        margin-bottom: 24px;
+        background: var(--light);
+        border-radius: 10px;
+        box-shadow: var(--shadow);
     }
-    
-    /* Main Content Layout */
-    .main-content-layout {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1.5rem;
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        gap: 3rem;
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
     }
-    
-    /* Gallery Section */
-    .gallery-section {
-        margin-bottom: 3rem;
+
+    .review-avatar {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 0.8rem;
+        font-weight: 600;
     }
-    
-    .section-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
+
+    .review-user {
+        font-weight: 600;
         color: var(--dark);
-        position: relative;
-        padding-bottom: 0.5rem;
     }
-    
-    .section-title::after {
+
+    .review-rating {
+        display: flex;
+        gap: 6px;
+        color: var(--success);
+    }
+
+    .review-comment {
+        color: var(--gray);
+        line-height: 1.7;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        white-space: normal;
+        max-width: 100%;
+    }
+
+    .review-form h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .review-form .rating-input {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .review-form .rating-input label {
+        cursor: pointer;
+    }
+
+    .review-form .rating-input input {
+        display: none;
+    }
+
+    .review-form .rating-input i {
+        color: var(--gray);
+        font-size: 1.1rem;
+        transition: var(--transition);
+    }
+
+    .review-form .rating-input input:checked ~ i,
+    .review-form .rating-input label:hover i,
+    .review-form .rating-input label:hover ~ label i {
+        color: var(--success);
+    }
+
+    .review-form textarea {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        min-height: 120px;
+        font-size: 0.9rem;
+        font-family: var(--font-family);
+        margin-bottom: 20px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .review-form textarea:focus {
+        border-color: var(--primary);
+        outline: none;
+    }
+
+    .review-form button {
+        padding: 14px 28px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: var(--white);
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .review-form button:hover {
+        background: linear-gradient(135deg, #3a52cc, #2e0990);
+        transform: translateY(-2px);
+    }
+
+    .more-reviews {
+        text-align: center;
+        margin-top: 16px;
+    }
+
+    .more-reviews button {
+        padding: 12px 24px;
+        background: none;
+        border: 2px solid var(--primary);
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--primary);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .more-reviews button:hover {
+        background: var(--primary);
+        color: var(--white);
+    }
+
+    /* Similar Businesses */
+    .similar-businesses {
+        margin: 72px 0;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 28px;
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .section-title:after {
         content: '';
         position: absolute;
         bottom: 0;
         right: 0;
-        width: 60px;
+        width: 48px;
         height: 3px;
         background: var(--primary);
-        border-radius: 2px;
     }
-    
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
+
+    .similar-businesses-carousel {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding-bottom: 16px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--gray);
     }
-    
-    .gallery-item {
-        height: 180px;
-        border-radius: var(--radius);
+
+    .similar-businesses-carousel::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .similar-businesses-carousel::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+    }
+
+    .similar-businesses-carousel::-webkit-scrollbar-track {
+        background: var(--gray);
+    }
+
+    .business-card {
+        flex: 0 0 220px;
+        background: var(--white);
+        border-radius: 10px;
         overflow: hidden;
-        position: relative;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        scroll-snap-align: center;
     }
-    
-    .gallery-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    .business-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
     }
-    
-    .gallery-item img {
+
+    .business-img {
+        height: 200px;
+        overflow: hidden;
+        background: var(--light);
+    }
+
+    .business-img img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.3s ease;
+        transition: var(--transition);
     }
-    
-    .gallery-item:hover img {
+
+    .business-card:hover .business-img img {
         transform: scale(1.05);
     }
-    
-    /* Services Section */
-    .services-section {
-        margin-bottom: 3rem;
+
+    .business-info {
+        padding: 16px;
     }
-    
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-    
-    .service-card {
-        background: var(--white);
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        box-shadow: var(--shadow);
-        transition: all 0.3s ease;
-        border: 1px solid transparent;
-    }
-    
-    .service-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        border-color: rgba(67, 97, 238, 0.1);
-    }
-    
-    .service-icon {
-        width: 50px;
-        height: 50px;
-        background: rgba(67, 97, 238, 0.1);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        color: var(--primary);
-        font-size: 1.3rem;
-    }
-    
-    .service-title {
-        font-size: 1.1rem;
+
+    .business-name {
+        font-size: 1rem;
         font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--dark);
-    }
-    
-    .service-description {
-        color: var(--gray);
-        font-size: 0.9rem;
-        line-height: 1.5;
-    }
-    
-    /* Reviews Section */
-    .reviews-section {
-        margin-bottom: 3rem;
-    }
-    
-    .reviews-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    
-    .reviews-summary {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .overall-rating {
-        text-align: center;
-    }
-    
-    .rating-large {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--dark);
-        line-height: 1;
-    }
-    
-    .rating-max {
-        color: var(--gray);
-        font-size: 0.9rem;
-    }
-    
-    .rating-bars {
-        flex-grow: 1;
-        min-width: 200px;
-    }
-    
-    .rating-bar {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .rating-label {
-        width: 60px;
-        font-size: 0.8rem;
-        color: var(--gray);
-    }
-    
-    .rating-progress {
-        flex-grow: 1;
-        height: 6px;
-        background: var(--border);
-        border-radius: 3px;
+        margin-bottom: 10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         overflow: hidden;
+        text-overflow: ellipsis;
     }
-    
-    .rating-progress-fill {
-        height: 100%;
-        background: var(--primary);
-        border-radius: 3px;
-    }
-    
-    .rating-count {
-        width: 30px;
-        text-align: left;
-        font-size: 0.8rem;
-        color: var(--gray);
-    }
-    
-    .add-review-btn {
-        align-self: flex-start;
-    }
-    
-    .reviews-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-    
-    .review-card {
-        background: var(--white);
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        box-shadow: var(--shadow);
-    }
-    
-    .review-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    
-    .reviewer-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    .reviewer-avatar {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary), var(--accent));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--white);
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-    
-    .reviewer-details h4 {
-        font-weight: 600;
-        margin-bottom: 0.2rem;
-        font-size: 1rem;
-    }
-    
-    .review-date {
-        color: var(--gray);
-        font-size: 0.8rem;
-    }
-    
-    .review-rating {
-        display: flex;
-        gap: 0.2rem;
-        color: #ffc107;
-    }
-    
-    .review-content {
+
+    .business-name a {
+        text-decoration: none;
         color: var(--dark);
-        line-height: 1.6;
-        font-size: 0.95rem;
+        transition: var(--transition);
     }
-    
-    /* Sidebar Sections */
-    .sidebar-section {
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .sidebar-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--dark);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .sidebar-title i {
+
+    .business-name a:hover {
         color: var(--primary);
     }
-    
-    .business-hours {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-    
-    .hour-item {
-        display: flex;
-        justify-content: space-between;
-        padding-bottom: 0.8rem;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.9rem;
-    }
-    
-    .hour-item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-    
-    .hour-day {
-        font-weight: 500;
-    }
-    
-    .hour-time {
-        color: var(--gray);
-    }
-    
-    .hour-closed {
-        color: #e74c3c;
-    }
-    
-    .location-map {
-        height: 150px;
-        background: var(--border);
-        border-radius: var(--radius);
-        margin-top: 1rem;
+
+    .business-rating {
         display: flex;
         align-items: center;
-        justify-content: center;
-        color: var(--gray);
-        font-size: 0.9rem;
-    }
-    
-    .similar-businesses {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .similar-business {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-        border-radius: var(--radius);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        text-decoration: none;
-        color: inherit;
-    }
-    
-    .similar-business:hover {
-        background: rgba(67, 97, 238, 0.05);
-        text-decoration: none;
-        color: inherit;
-    }
-    
-    .similar-business-logo {
-        width: 45px;
-        height: 45px;
-        border-radius: 8px;
-        background: linear-gradient(135deg, var(--primary), var(--accent));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--white);
+        gap: 10px;
         font-size: 1rem;
-        flex-shrink: 0;
+        font-weight: 700;
+        color: var(--primary);
     }
-    
-    .similar-business-info h4 {
-        font-weight: 600;
-        margin-bottom: 0.2rem;
-        font-size: 0.95rem;
-    }
-    
-    .similar-business-rating {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.8rem;
-        color: var(--gray);
-    }
-    
+
     /* Buttons */
     .btn {
-        padding: 0.8rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: none;
-        font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        text-decoration: none;
-    }
-    
-    .btn-primary {
+        padding: 14px 28px;
         background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: var(--white);
-        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
-    
-    .btn-primary:hover {
+
+    .btn:hover {
+        background: linear-gradient(135deg, #3a52cc, #2e0990);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
     }
-    
+
     .btn-outline {
-        background: transparent;
-        color: var(--primary);
+        background: none;
         border: 2px solid var(--primary);
+        color: var(--primary);
     }
-    
+
     .btn-outline:hover {
-        background: rgba(67, 97, 238, 0.05);
-    }
-    
-    .btn-large {
-        padding: 1rem 2rem;
-        font-size: 1rem;
-    }
-    
-    .btn-disabled {
-        background: var(--gray);
+        background: var(--primary);
         color: var(--white);
-        cursor: not-allowed;
-        opacity: 0.6;
     }
-    
-    .btn-disabled:hover {
-        transform: none;
-        box-shadow: none;
-    }
-    
+
     /* Messages */
     .messages {
-        margin-bottom: 1.5rem;
+        margin-bottom: 24px;
     }
-    
+
     .alert {
-        padding: 1rem;
+        padding: 14px;
         border-radius: 10px;
-        margin-bottom: 1rem;
+        margin-bottom: 16px;
         font-size: 0.9rem;
     }
-    
+
     .alert-success {
         background: #d4edda;
         color: #155724;
         border: 1px solid #c3e6cb;
     }
-    
+
     .alert-warning {
         background: #fff3cd;
         color: #856404;
         border: 1px solid #ffeaa7;
     }
-    
+
     .alert-error {
         background: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
     }
-    
+
     /* Empty States */
     .empty-state {
         text-align: center;
-        padding: 2rem 1rem;
+        padding: 40px;
         color: var(--gray);
+        font-size: 0.95rem;
     }
-    
+
     .empty-state i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        margin-bottom: 16px;
         color: var(--border);
     }
-    
-    .empty-state p {
-        margin: 0;
-        font-size: 0.9rem;
+
+    /* Lightbox */
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
     }
-    
+
+    .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: var(--white);
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
     /* Responsive Design */
-    @media (max-width: 1024px) {
-        .business-main-info {
-            grid-template-columns: 1fr;
-            gap: 2rem;
+    @media (min-width: 768px) {
+        .business-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
         }
-        
-        .main-content-layout {
-            grid-template-columns: 1fr;
-            gap: 2rem;
+
+        .business-gallery {
+            margin-bottom: 0;
         }
-        
-        .business-sidebar {
-            position: static;
+
+        .gallery-slider {
+            height: 520px;
         }
-        
-        .services-grid {
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+        .gallery-thumbnails {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            overflow-x: hidden;
         }
-    }
-    
-    @media (max-width: 768px) {
-        .business-header {
-            padding: 3rem 0 2rem;
+
+        .thumbnail {
+            flex: 0 0 120px;
+            height: 120px;
         }
-        
-        .business-title-section h1 {
+
+        .business-info {
+            padding: 28px;
+        }
+
+        .business-title {
             font-size: 1.8rem;
         }
-        
-        .reviews-header {
-            flex-direction: column;
-            align-items: flex-start;
+
+        .tabs-header {
+            flex-direction: row;
+            justify-content: flex-start;
+            padding: 16px 0;
+            box-shadow: none;
+            overflow-x: hidden;
         }
-        
-        .reviews-summary {
-            width: 100%;
-            justify-content: space-between;
+
+        .tab-btn {
+            flex: none;
+            padding: 12px 24px;
         }
-        
-        .gallery-grid {
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+        .similar-businesses-carousel {
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 24px;
         }
-        
-        .services-grid {
-            grid-template-columns: 1fr;
+
+        .business-card {
+            flex: 0 0 260px;
         }
-        
-        .contact-actions {
-            flex-direction: column;
-        }
-        
-        .business-main-info {
-            gap: 1.5rem;
+
+        .business-img {
+            height: 240px;
         }
     }
-    
-    @media (max-width: 480px) {
-        .business-header-content {
-            padding: 0 1rem;
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 0 12px;
         }
-        
-        .main-content-layout {
-            padding: 0 1rem;
+
+        .business-detail {
+            margin: 24px 0 48px;
         }
-        
-        .business-detail-container {
-            padding: 0.5rem;
+
+        .gallery-slider {
+            height: 280px;
         }
-        
-        .gallery-grid {
-            grid-template-columns: 1fr;
+
+        .thumbnail {
+            flex: 0 0 80px;
+            height: 80px;
         }
-        
-        .reviews-summary {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
+
+        .business-title {
+            font-size: 1.4rem;
         }
-        
-        .rating-bars {
-            width: 100%;
-        }
-        
-        .business-breadcrumb {
-            font-size: 0.8rem;
-        }
-        
+
         .business-description {
+            font-size: 0.95rem;
+        }
+
+        .tabs-header {
+            gap: 6px;
+            padding: 10px;
+        }
+
+        .tab-btn {
+            font-size: 0.9rem;
+            padding: 10px 16px;
+            flex: 0 0 100px;
+        }
+
+        .tab-content {
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+        }
+
+        .business-card {
+            flex: 0 0 200px;
+        }
+
+        .business-img {
+            height: 180px;
+        }
+
+        .business-name {
+            font-size: 0.95rem;
+        }
+
+        .business-rating {
+            font-size: 0.95rem;
+        }
+
+        .review-item {
+            padding: 12px;
+        }
+
+        .review-avatar {
+            width: 36px;
+            height: 36px;
+            font-size: 0.7rem;
+        }
+
+        .review-user {
+            font-size: 0.9rem;
+        }
+
+        .review-comment {
+            font-size: 0.85rem;
+        }
+
+        .review-form h3 {
             font-size: 1rem;
         }
-        
-        .section-title {
-            font-size: 1.3rem;
+
+        .review-form textarea {
+            min-height: 100px;
+            font-size: 0.85rem;
+        }
+
+        .review-form button {
+            padding: 12px 24px;
+            font-size: 0.9rem;
+        }
+
+        .more-reviews button {
+            padding: 10px 20px;
+            font-size: 0.85rem;
         }
     }
 </style>
 
-<div class="business-detail-container">
-    <!-- Business Header -->
-    <section class="business-header">
-        <div class="business-header-content">
-            <div class="business-breadcrumb">
-                <a href="{% url 'send:business_list' %}">{% trans "خانه" %}</a>
-                <i class="fas fa-chevron-left"></i>
-                <a href="{% url 'send:business_list' %}">{% trans "مشاغل" %}</a>
-                <i class="fas fa-chevron-left"></i>
-                <a href="{% url 'send:business_list' %}?category[]={{ business.category.slug }}">{{ business.category.name }}</a>
-                <i class="fas fa-chevron-left"></i>
-                <span>{{ business.name }}</span>
+<div class="container">
+    <div class="business-detail">
+        <div class="business-gallery">
+            <div class="gallery-slider" id="gallerySlider">
+                {% for image in images %}
+                    <div class="gallery-slide" data-image="{{ image.image.url }}">
+                        <img src="{{ image.image.url }}" alt="{{ business.name|default:_('کسب‌وکار بدون نام') }}" loading="lazy">
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <p>{% trans "هنوز تصویری اضافه نشده است" %}</p>
+                    </div>
+                {% endfor %}
             </div>
-            
-            <div class="business-main-info">
-                <div class="business-title-section">
-                    <h1>{{ business.name }}</h1>
-                    <div class="business-category">{{ business.category.name }}</div>
-                    
-                    <div class="business-rating">
-                        <div class="rating-stars">
-                            {% for i in "12345" %}
-                                {% if forloop.counter <= avg_rating|floatformat:0 %}
-                                    <i class="fas fa-star"></i>
-                                {% elif forloop.counter <= avg_rating|add:0.5 %}
-                                    <i class="fas fa-star-half-alt"></i>
-                                {% else %}
-                                    <i class="far fa-star"></i>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="rating-value">{{ avg_rating|floatformat:1 }}</div>
-                        <div class="rating-count">({{ rating_count }})</div>
+            <div class="gallery-thumbnails">
+                {% for image in images %}
+                    <div class="thumbnail {% if forloop.first %}active{% endif %}">
+                        <img src="{{ image.image.url }}" alt="{{ business.name|default:_('کسب‌وکار بدون نام') }}" loading="lazy">
                     </div>
-                    
-                    <p class="business-description">{{ business.description }}</p>
-                    
-                    <div class="business-tags">
-                        {% for service in services %}
-                            <div class="business-tag">{{ service.name }}</div>
-                        {% endfor %}
+                {% empty %}
+                    <div class="empty-state">
+                        <p>{% trans "تصویری یافت نشد" %}</p>
                     </div>
-                </div>
-                
-                <div class="business-sidebar">
-                    <div class="business-contact-card">
-                        <div class="business-logo">
-                            <i class="fas fa-store"></i>
-                        </div>
-                        
-                        <div class="contact-actions">
-                            <a href="{% url 'send:chat' business.slug %}" class="btn btn-primary btn-large">
-                                <i class="fas fa-comment-dots"></i>
-                                {% trans "شروع چت" %}
-                            </a>
-                            <button class="btn btn-outline btn-large" onclick="window.location.href='tel:{{ business.phone }}'">
-                                <i class="fas fa-phone"></i>
-                                {% trans "تماس تلفنی" %}
-                            </button>
-                        </div>
-                        
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>{{ business.address }}, {{ business.city }}{% if business.district %}, {{ business.district }}{% endif %}</span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-phone"></i>
-                                <span>{{ business.phone }}</span>
-                            </div>
-                            {% if business.instagram %}
-                            <div class="contact-item">
-                                <i class="fab fa-instagram"></i>
-                                <span>{{ business.instagram }}</span>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
-    </section>
-
-    <!-- Main Content -->
-    <div class="main-content-layout">
-        <!-- Main Content Column -->
-        <div class="main-content">
-            <!-- Gallery Section -->
-            <section class="gallery-section">
-                <h2 class="section-title">{% trans "گالری تصاویر" %}</h2>
-                <div class="gallery-grid">
-                    {% for image in images %}
-                        <div class="gallery-item">
-                            <img src="{{ image.image.url }}" alt="{{ business.name }} نمونه کار">
-                        </div>
-                    {% empty %}
-                        <div class="empty-state">
-                            <i class="fas fa-images"></i>
-                            <p>{% trans "هنوز تصویری اضافه نشده است" %}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </section>
-            
-            <!-- Services Section -->
-            <section class="services-section">
-                <h2 class="section-title">{% trans "خدمات ما" %}</h2>
-                <div class="services-grid">
-                    {% for service in services %}
-                        <div class="service-card">
-                            <div class="service-icon">
-                                <i class="fas fa-{{ service.icon|default:'concierge-bell' }}"></i>
-                            </div>
-                            <h3 class="service-title">{{ service.name }}</h3>
-                            <p class="service-description">{{ service.description|default:"توضیحات سرویس به زودی اضافه می‌شود" }}</p>
-                        </div>
-                    {% empty %}
-                        <div class="empty-state">
-                            <i class="fas fa-concierge-bell"></i>
-                            <p>{% trans "هنوز خدماتی ثبت نشده است" %}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </section>
-            
-            <!-- Reviews Section -->
-            <section class="reviews-section">
-                <div class="reviews-header">
-                    <h2 class="section-title">{% trans "نظرات کاربران" %}</h2>
-                    {% if user.is_authenticated %}
-                        {% if user_has_reviewed %}
-                            <button class="btn btn-disabled add-review-btn" disabled>
-                                <i class="fas fa-check"></i>
-                                {% trans "شما قبلاً نظر داده‌اید" %}
-                            </button>
+        <div class="business-info">
+            <h1 class="business-title">{{ business.name|default:_('کسب‌وکار بدون نام') }}</h1>
+            <div class="business-meta">
+                <div class="rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= avg_rating|floatformat:0 %}
+                            <i class="fas fa-star"></i>
+                        {% elif forloop.counter <= avg_rating|add:0.5 %}
+                            <i class="fas fa-star-half-alt"></i>
                         {% else %}
-                            <a href="{% url 'send:add_review' business.slug %}" class="btn btn-primary add-review-btn">
-                                <i class="fas fa-plus"></i>
-                                {% trans "افزودن نظر" %}
-                            </a>
+                            <i class="far fa-star"></i>
                         {% endif %}
-                    {% else %}
-                        <a href="{% url 'accounts:login' %}?next={% url 'send:add_review' business.slug %}" class="btn btn-primary add-review-btn">
-                            <i class="fas fa-plus"></i>
-                            {% trans "افزودن نظر" %}
-                        </a>
-                    {% endif %}
+                    {% endfor %}
                 </div>
-
-                <!-- Messages -->
-                {% if messages %}
-                    <div class="messages">
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
+                <span class="review-count">({{ rating_count }} {% trans "نظر" %})</span>
+                <span class="business-category">{{ business.category.name|default:_('بدون دسته‌بندی') }}</span>
+            </div>
+            <div class="contact-actions">
+                <a href="{% url 'send:chat' business.slug %}" class="btn">
+                    <i class="fas fa-comment-dots"></i>
+                    {% trans " چت" %}
+                </a>
+                <a href="tel:{{ business.phone }}" class="btn btn-outline">
+                    <i class="fas fa-phone"></i>
+                    {% trans "تماس تلفنی" %}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="business-tabs">
+        <div class="tabs-header">
+            <button class="tab-btn active" data-tab="description">{% trans "توضیحات" %}</button>
+            <button class="tab-btn" data-tab="address">{% trans "آدرس‌ها" %}</button>
+            <button class="tab-btn" data-tab="reviews">{% trans "نظرات" %} ({{ ratings.count }})</button>
+        </div>
+        <div class="tab-content active" id="description">
+            <p class="description-content">{{ business.description|default:_('توضیحات در دسترس نیست') }}</p>
+        </div>
+        <div class="tab-content" id="address">
+            <div class="business-meta-info">
+                <div class="meta-item">
+                    <span class="meta-title">{% trans "آدرس" %}:</span>
+                    <span class="meta-value">{{ business.address|default:_('بدون آدرس') }}{% if business.district %}, {{ business.district }}{% endif %}, {{ business.city|default:_('بدون شهر') }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-title">{% trans "تلفن" %}:</span>
+                    <span class="meta-value">{{ business.phone|default:_('بدون تلفن') }}</span>
+                </div>
+                {% if business.instagram %}
+                    <div class="meta-item">
+                        <span class="meta-title">{% trans "اینستاگرام" %}:</span>
+                        <span class="meta-value">@{{ business.instagram }}</span>
                     </div>
                 {% endif %}
-
-                <div class="reviews-list">
-                    {% for rating in ratings %}
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <div class="reviewer-avatar">{{ rating.user.username|slice:":2"|upper }}</div>
-                                    <div class="reviewer-details">
-                                        <h4>{{ rating.user.get_full_name|default:rating.user.username }}</h4>
-                                        <div class="review-date">{{ rating.created_at|timesince }} {% trans "پیش" %}</div>
-                                    </div>
-                                </div>
-                                <div class="review-rating">
-                                    {% for i in "12345" %}
-                                        {% if forloop.counter <= rating.rating %}
-                                            <i class="fas fa-star"></i>
-                                        {% else %}
-                                            <i class="far fa-star"></i>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>{{ rating.comment|default:"بدون نظر" }}</p>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <div class="empty-state">
-                            <i class="fas fa-comments"></i>
-                            <p>{% trans "هنوز نظری ثبت نشده است" %}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </section>
-        </div>
-        
-        <!-- Sidebar Column -->
-        <div class="sidebar">
-            <!-- Business Hours -->
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-clock"></i>
-                    {% trans "ساعات کاری" %}
-                </h3>
                 <div class="business-hours">
                     {% for hour in hours %}
                         <div class="hour-item">
@@ -996,101 +943,219 @@
                         </div>
                     {% empty %}
                         <div class="empty-state">
+                            <i class="fas fa-clock"></i>
                             <p>{% trans "ساعات کاری ثبت نشده" %}</p>
                         </div>
                     {% endfor %}
                 </div>
-            </div>
-            
-            <!-- Location -->
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-map-marker-alt"></i>
-                    {% trans "موقعیت مکانی" %}
-                </h3>
-                <p>{{ business.address }}, {{ business.city }}{% if business.district %}, {{ business.district }}{% endif %}</p>
-                <div class="location-map">
-                    <i class="fas fa-map"></i>
-                    {% trans "نمایش نقشه" %}
-                </div>
-            </div>
-            
-            <!-- Similar Businesses -->
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-building"></i>
-                    {% trans "مشاغل مشابه" %}
-                </h3>
-                <div class="similar-businesses">
-                    {% for similar in similar_businesses %}
-                        <a href="{% url 'send:business_detail' similar.slug %}" class="similar-business">
-                            <div class="similar-business-logo">
-                                <i class="fas fa-{{ similar.services.first.icon|default:'building' }}"></i>
-                            </div>
-                            <div class="similar-business-info">
-                                <h4>{{ similar.name }}</h4>
-                                <div class="similar-business-rating">
-                                    <div class="rating-stars">
-                                        {% for i in "12345" %}
-                                            {% if forloop.counter <= similar.avg_rating|floatformat:0 %}
-                                                <i class="fas fa-star"></i>
-                                            {% else %}
-                                                <i class="far fa-star"></i>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                    <span>{{ similar.avg_rating|floatformat:1 }}</span>
-                                </div>
-                            </div>
-                        </a>
-                    {% empty %}
-                        <div class="empty-state">
-                            <p>{% trans "مشاغل مشابه یافت نشد" %}</p>
-                        </div>
-                    {% endfor %}
-                </div>
+
             </div>
         </div>
+        <div class="tab-content" id="reviews">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% for rating in ratings|slice:":5" %}
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="review-avatar">{{ rating.user.username|slice:":2"|upper }}</div>
+                        <div>
+                            <div class="review-user">{{ rating.user.get_full_name|default:rating.user.username }}</div>
+                            <div class="review-rating">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= rating.rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <p class="review-comment">{{ rating.comment|default:_('بدون نظر') }}</p>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-comments"></i>
+                    <p>{% trans "هنوز نظری ثبت نشده است" %}</p>
+                </div>
+            {% endfor %}
+            {% if ratings|length > 5 %}
+                <div class="more-reviews">
+                    <button id="showMoreReviews">{% trans "نظرات بیشتر" %}</button>
+                </div>
+            {% endif %}
+            {% if user.is_authenticated %}
+                {% if user_has_reviewed %}
+                    <p class="review-form">
+                        <i class="fas fa-check"></i>
+                        {% trans "شما قبلاً نظر داده‌اید" %}
+                    </p>
+                {% else %}
+                    <form class="review-form" method="post" action="{% url 'send:add_review' business.slug %}">
+                        {% csrf_token %}
+                        <h3>{% trans "ثبت نظر شما" %}</h3>
+                        <div class="rating-input">
+                            {% for i in "12345" %}
+                                <input type="radio" name="rating" value="{{ i }}" id="rating-{{ i }}" {% if forloop.first %}checked{% endif %}>
+                                <label for="rating-{{ i }}"><i class="fas fa-star"></i></label>
+                            {% endfor %}
+                        </div>
+                        <textarea name="comment" placeholder="{% trans 'نظر خود را بنویسید...' %}" required></textarea>
+                        <button type="submit">{% trans "ثبت نظر" %}</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p>{% trans "برای ثبت نظر، لطفاً" %} <a href="{% url 'accounts:login' %}?next={% url 'send:add_review' business.slug %}" style="color: var(--primary);">{% trans "وارد شوید" %}</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="similar-businesses">
+        <h2 class="section-title">{% trans "مشاغل مشابه" %}</h2>
+        <div class="similar-businesses-carousel">
+            {% for similar in similar_businesses %}
+                <div class="business-card">
+                    <div class="business-img">
+                        {% for image in similar.images.all %}
+                            {% if forloop.first %}
+                                <img src="{{ image.image.url }}" alt="{{ similar.name|default:_('کسب‌وکار بدون نام') }}" loading="lazy">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="business-info">
+                        <h3 class="business-name"><a href="{% url 'send:business_detail' similar.slug %}">{{ similar.name|default:_('کسب‌وکار بدون نام') }}</a></h3>
+                        <div class="business-rating">
+                            <span>{{ similar.avg_rating|floatformat:1 }}</span>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-building"></i>
+                    <p>{% trans "مشاغل مشابه یافت نشد" %}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close"><i class="fas fa-times"></i></span>
+        <img id="lightbox-image" src="" alt="Full-size image">
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    // Gallery Slider and Lightbox
+    const gallerySlider = document.getElementById('gallerySlider');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const gallerySlides = document.querySelectorAll('.gallery-slide');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxClose = document.querySelector('.lightbox-close');
 
-        // Add click handler for phone button
-        document.querySelector('.btn-outline.btn-large').addEventListener('click', function() {
-            alert('{% trans "در حال برقراری تماس با" %} {{ business.phone }}');
-        });
-
-        // Add loading state for buttons
-        document.querySelectorAll('.btn').forEach(button => {
-            button.addEventListener('click', function() {
-                if (!this.classList.contains('btn-disabled')) {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "در حال پردازش..." %}';
-                    this.disabled = true;
-                    
-                    // Reset after 2 seconds (for demo)
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.disabled = false;
-                    }, 2000);
-                }
+    thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', () => {
+            thumbnails.forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+            gallerySlider.scrollTo({
+                left: index * gallerySlider.offsetWidth,
+                behavior: 'smooth'
             });
         });
     });
+
+    gallerySlider.addEventListener('scroll', () => {
+        const index = Math.round(gallerySlider.scrollLeft / gallerySlider.offsetWidth);
+        thumbnails.forEach(t => t.classList.remove('active'));
+        if (thumbnails[index]) {
+            thumbnails[index].classList.add('active');
+        }
+    });
+
+    gallerySlides.forEach(slide => {
+        slide.addEventListener('click', () => {
+            lightboxImage.src = slide.dataset.image;
+            lightbox.style.display = 'flex';
+        });
+    });
+
+    lightboxClose.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.style.display = 'none';
+        }
+    });
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+        });
+    });
+
+    // Show More Reviews
+    const showMoreReviews = document.getElementById('showMoreReviews');
+    if (showMoreReviews) {
+        showMoreReviews.addEventListener('click', () => {
+            const reviewsList = document.getElementById('reviews');
+            reviewsList.innerHTML = `
+                {% for rating in ratings %}
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-avatar">{{ rating.user.username|slice:":2"|upper }}</div>
+                            <div>
+                                <div class="review-user">{{ rating.user.get_full_name|default:rating.user.username }}</div>
+                                <div class="review-rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= rating.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="review-comment">{{ rating.comment|default:_('بدون نظر') }}</p>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fas fa-comments"></i>
+                        <p>{% trans "هنوز نظری ثبت نشده است" %}</p>
+                    </div>
+                {% endfor %}
+            `;
+            showMoreReviews.remove();
+        });
+    }
+
+    // Review Form Submission
+    const reviewForm = document.querySelector('.review-form');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', (e) => {
+            const submitBtn = reviewForm.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "در حال ثبت..." %}';
+            submitBtn.disabled = true;
+            setTimeout(() => {
+                submitBtn.innerHTML = '{% trans "ثبت نظر" %}';
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+});
 </script>
 {% endblock content %}

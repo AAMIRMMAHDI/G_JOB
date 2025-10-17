@@ -540,14 +540,18 @@
                     {% trans "تصاویر شغل" %}
                 </h2>
                 
-                <div class="image-upload-section" onclick="document.getElementById('imageUpload').click()">
+                <div class="image-upload-section" onclick="document.getElementById('id_image').click()">
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
                     <p>{% trans "برای آپلود تصاویر کلیک کنید یا فایل‌ها را اینجا رها کنید" %}</p>
                     <small>{% trans "فرمت‌های مجاز: JPG, PNG, GIF (حداکثر ۵ مگابایت)" %}</small>
-                    <input type="file" id="imageUpload" name="images" multiple accept="image/*" style="display: none;">
+                    <input type="file" id="id_image" name="image" multiple accept="image/*" style="display: none;">
                 </div>
+                
+                {% for error in form.images.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
                 
                 <div class="image-preview-grid" id="imagePreview"></div>
             </div>
@@ -630,7 +634,23 @@
                 </div>
             </div>
             
-
+            <div class="form-section">
+                <h2 class="section-title">
+                    <i class="fas fa-concierge-bell"></i>
+                    {% trans "خدمات" %}
+                </h2>
+                
+                <div class="services-container">
+                    {% for value, label, icon in service_choices %}
+                        <div class="service-item">
+                            <input type="checkbox" name="services" value="{{ value }}" id="service-{{ value }}" style="display: none;">
+                            <input type="hidden" name="icons" value="{{ icon }}">
+                            <div class="service-checkbox"></div>
+                            <span>{% trans label %}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             
             <div class="form-actions">
                 <a href="{% url 'accounts:profile' %}" class="btn btn-outline">
@@ -654,7 +674,7 @@
                 <div class="preview-name" id="previewName">{{ form.name.value|default:_('نام شغل') }}</div>
                 <div class="preview-category" id="previewCategory">
                     {% if form.category.value %}
-                        {{ form.category.value }}
+                        {{ form.category.value.name }}
                     {% else %}
                         {% trans 'دسته‌بندی' %}
                     {% endif %}
@@ -662,9 +682,7 @@
             </div>
             
             <div class="preview-body">
-                <div class="preview-gallery" id="previewGallery">
-                    <!-- تصاویر در اینجا نمایش داده می‌شوند -->
-                </div>
+                <div class="preview-gallery" id="previewGallery"></div>
                 
                 <div class="preview-info">
                     <div class="info-item">
@@ -788,7 +806,7 @@
         }
         
         // Image upload and preview
-        document.getElementById('imageUpload').addEventListener('change', function(e) {
+        document.getElementById('id_image').addEventListener('change', function(e) {
             const files = e.target.files;
             const preview = document.getElementById('imagePreview');
             const galleryPreview = document.getElementById('previewGallery');
@@ -814,19 +832,29 @@
                     removeBtn.innerHTML = '<i class="fas fa-times"></i>';
                     removeBtn.addEventListener('click', function() {
                         previewItem.remove();
+                        // Update gallery preview after removal
+                        const remainingImages = preview.querySelectorAll('.preview-item img');
+                        galleryPreview.innerHTML = '';
+                        remainingImages.forEach((img, index) => {
+                            if (index < 4) {
+                                const galleryImg = document.createElement('img');
+                                galleryImg.src = img.src;
+                                galleryPreview.appendChild(galleryImg);
+                            }
+                        });
                     });
                     
                     previewItem.appendChild(img);
                     previewItem.appendChild(removeBtn);
                     preview.appendChild(previewItem);
                     
-                    // Gallery preview
-                    if (i < 4) { // Only show first 4 images in gallery preview
+                    // Gallery preview (up to 4 images)
+                    if (i < 4) {
                         const galleryImg = document.createElement('img');
                         galleryImg.src = e.target.result;
                         galleryPreview.appendChild(galleryImg);
                     }
-                }
+                };
                 
                 reader.readAsDataURL(file);
             }

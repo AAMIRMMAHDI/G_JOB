@@ -73,12 +73,12 @@ def business_register_view(request):
         image_form = BusinessImageForm()
 
     service_choices = [
-        ('delivery', _('تحویل در محل'), 'fa-truck'),
-        ('reservation', _('رزرو آنلاین'), 'fa-calendar-check'),
-        ('parking', _('پارکینگ'), 'fa-parking'),
-        ('wifi', _('وای‌فای رایگان'), 'fa-wifi'),
-        ('family', _('فضای خانوادگی'), 'fa-users'),
-        ('creditcard', _('پذیرش کارت'), 'fa-credit-card'),
+        ('تحویل_در_محل', _('تحویل در محل'), 'fa-truck'),
+        ('رزرو_آنلاین', _('رزرو آنلاین'), 'fa-calendar-check'),
+        ('پارکینگ', _('پارکینگ'), 'fa-parking'),
+        ('وای_فای_رایگان', _('وای‌فای رایگان'), 'fa-wifi'),
+        ('فضای_خانوادگی', _('فضای خانوادگی'), 'fa-users'),
+        ('پذیرش_کارت', _('پذیرش کارت'), 'fa-credit-card'),
     ]
 
     hours_choices = {
@@ -121,12 +121,12 @@ def business_list_view(request):
     ).order_by('city')
 
     service_choices = [
-        ('delivery', _('تحویل در محل'), 'fa-truck'),
-        ('reservation', _('رزرو آنلاین'), 'fa-calendar-check'),
-        ('parking', _('پارکینگ'), 'fa-parking'),
-        ('wifi', _('وای‌فای رایگان'), 'fa-wifi'),
-        ('family', _('فضای خانوادگی'), 'fa-users'),
-        ('creditcard', _('پذیرش کارت'), 'fa-credit-card'),
+        ('تحویل_در_محل', _('تحویل در محل'), 'fa-truck'),
+        ('رزرو_آنلاین', _('رزرو آنلاین'), 'fa-calendar-check'),
+        ('پارکینگ', _('پارکینگ'), 'fa-parking'),
+        ('وای_فای_رایگان', _('وای‌فای رایگان'), 'fa-wifi'),
+        ('فضای_خانوادگی', _('فضای خانوادگی'), 'fa-users'),
+        ('پذیرش_کارت', _('پذیرش کارت'), 'fa-credit-card'),
     ]
 
     return render(request, 'send/LIST.html', {
