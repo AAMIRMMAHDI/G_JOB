@@ -988,30 +988,61 @@
                 <div class="more-reviews">
                     <button id="showMoreReviews">{% trans "نظرات بیشتر" %}</button>
                 </div>
-            {% endif %}
-            {% if user.is_authenticated %}
-                {% if user_has_reviewed %}
-                    <p class="review-form">
-                        <i class="fas fa-check"></i>
-                        {% trans "شما قبلاً نظر داده‌اید" %}
-                    </p>
-                {% else %}
-                    <form class="review-form" method="post" action="{% url 'send:add_review' business.slug %}">
-                        {% csrf_token %}
-                        <h3>{% trans "ثبت نظر شما" %}</h3>
-                        <div class="rating-input">
-                            {% for i in "12345" %}
-                                <input type="radio" name="rating" value="{{ i }}" id="rating-{{ i }}" {% if forloop.first %}checked{% endif %}>
-                                <label for="rating-{{ i }}"><i class="fas fa-star"></i></label>
-                            {% endfor %}
+            {% endif %}{% if user.is_authenticated %}
+            {% if user_has_reviewed %}
+                <!-- نمایش نظر کاربر + ویرایش و حذف -->
+                <div class="review-form">
+                    <h3>{% trans "نظر شما" %}</h3>
+                    <div class="review-item" style="background: #f0f8ff; border: 1px solid #4361ee;">
+                        <div class="review-header">
+                            <div class="review-avatar">{{ user.username|slice:":2"|upper }}</div>
+                            <div>
+                                <div class="review-user">{{ user.get_full_name|default:user.username }}</div>
+                                <div class="review-rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= user_review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div style="margin-left: auto; display: flex; gap: 8px;">
+                                <button class="btn btn-outline" onclick="openEditModal('{{ business.slug }}', {{ user_review.rating }}, `{{ user_review.comment|escapejs }}`)">
+                                    <i class="fas fa-edit"></i> ویرایش
+                                </button>
+                                <button class="btn btn-outline" style="border-color: #e74c3c; color: #e74c3c;" onclick="deleteReview('{{ business.slug }}')">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
                         </div>
-                        <textarea name="comment" placeholder="{% trans 'نظر خود را بنویسید...' %}" required></textarea>
-                        <button type="submit">{% trans "ثبت نظر" %}</button>
-                    </form>
-                {% endif %}
+                        <p class="review-comment">{{ user_review.comment|default:"بدون نظر" }}</p>
+                        {% if not user_review.is_approved %}
+                            <small style="color: #e67e22; font-weight: 600;">
+                                <i class="fas fa-clock"></i> در انتظار تأیید ادمین
+                            </small>
+                        {% endif %}
+                    </div>
+                </div>
             {% else %}
-                <p>{% trans "برای ثبت نظر، لطفاً" %} <a href="{% url 'accounts:login' %}?next={% url 'send:add_review' business.slug %}" style="color: var(--primary);">{% trans "وارد شوید" %}</a>.</p>
+                <!-- فرم ثبت نظر جدید -->
+                <form class="review-form" method="post" action="{% url 'send:add_review' business.slug %}">
+                    {% csrf_token %}
+                    <h3>{% trans "ثبت نظر شما" %}</h3>
+                    <div class="rating-input">
+                        {% for i in "12345" %}
+                            <input type="radio" name="rating" value="{{ i }}" id="rating-new-{{ i }}" {% if forloop.first %}checked{% endif %}>
+                            <label for="rating-new-{{ i }}"><i class="fas fa-star"></i></label>
+                        {% endfor %}
+                    </div>
+                    <textarea name="comment" placeholder="{% trans 'نظر خود را بنویسید...' %}" required></textarea>
+                    <button type="submit">{% trans "ثبت نظر" %}</button>
+                </form>
             {% endif %}
+        {% else %}
+            <p>{% trans "برای ثبت نظر، لطفاً" %} <a href="{% url 'accounts:login' %}?next={{ request.path }}" style="color: var(--primary);">{% trans "وارد شوید" %}</a>.</p>
+        {% endif %}
         </div>
     </div>
     <div class="similar-businesses">
@@ -1046,6 +1077,30 @@
     <div class="lightbox" id="lightbox">
         <span class="lightbox-close"><i class="fas fa-times"></i></span>
         <img id="lightbox-image" src="" alt="Full-size image">
+    </div>
+
+    <!-- Edit Review Modal -->
+    <div class="lightbox" id="editModal" style="display: none; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 24px; border-radius: 16px; max-width: 500px; width: 90%; position: relative;">
+            <span class="lightbox-close" onclick="closeEditModal()" style="position: absolute; top: 12px; left: 12px; font-size: 1.3rem; cursor: pointer;">×</span>
+            <h3 style="margin-bottom: 20px; text-align: center;">{% trans "ویرایش نظر" %}</h3>
+            <form id="editReviewForm">
+                <input type="hidden" id="editSlug">
+                <div class="rating-input" style="justify-content: center; margin-bottom: 16px;">
+                    <input type="radio" name="rating" value="1" id="edit-1"><label for="edit-1"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" value="2" id="edit-2"><label for="edit-2"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" value="3" id="edit-3"><label for="edit-3"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" value="4" id="edit-4"><label for="edit-4"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" value="5" id="edit-5"><label for="edit-5"><i class="fas fa-star"></i></label>
+                </div>
+                <textarea id="editComment" placeholder="{% trans 'نظر خود را ویرایش کنید...' %}" style="width: 100%; min-height: 100px; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; font-family: inherit;" required></textarea>
+                <div style="text-align: center; margin-top: 16px;">
+                    <button type="submit" style="padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 10px; font-weight: 600;">
+                        {% trans "ذخیره تغییرات" %}
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -1157,5 +1212,65 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Edit & Delete Functions
+function openEditModal(slug, rating, comment) {
+    document.getElementById('editSlug').value = slug;
+    document.getElementById('editComment').value = comment;
+    document.querySelector(`#edit-${Math.round(rating)}`).checked = true;
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+document.getElementById('editReviewForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const slug = document.getElementById('editSlug').value;
+    const rating = document.querySelector('input[name="rating"]:checked').value;
+    const comment = document.getElementById('editComment').value.trim();
+
+    if (!comment) {
+        alert('نظر الزامی است.');
+        return;
+    }
+
+    fetch(`/send/business/${slug}/review/edit/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: `rating=${rating}&comment=${encodeURIComponent(comment)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert(data.message || 'خطایی رخ داد.');
+        }
+    });
+});
+
+function deleteReview(slug) {
+    if (confirm('آیا مطمئن هستید که می‌خواهید نظر خود را حذف کنید؟')) {
+        fetch(`/send/business/${slug}/review/delete/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                location.reload();
+            }
+        });
+    }
+}
 </script>
 {% endblock content %}

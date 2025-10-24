@@ -5,8 +5,8 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('', views.login_view, name='login'),
-    path('register/', views.register_view, name='register'),
+    path('login', views.login_view, name='login'),
+    path('registere/', views.register_view, name='register'),
     path('profile/', views.profile_view, name='profile'),
     path('businesses/', views.businesses_view, name='businesses'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),

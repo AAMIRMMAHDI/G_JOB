@@ -1,7 +1,9 @@
+# send/models.py
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+from django.urls import reverse  # <--- اینو اضافه کن!
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
@@ -14,6 +16,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Business(models.Model):
     owner = models.ForeignKey(
@@ -47,6 +50,11 @@ class Business(models.Model):
     def __str__(self):
         return self.name
 
+    # --- این متد رو اضافه کن! ---
+    def get_absolute_url(self):
+        return reverse('send:business_detail', kwargs={'slug': self.slug})
+    # --- تموم ---
+
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.name, allow_unicode=True)
@@ -60,6 +68,8 @@ class Business(models.Model):
             self.slug = unique_slug
         super().save(*args, **kwargs)
 
+
+# --- بقیه مدل‌ها بدون تغییر ---
 class BusinessImage(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='images', verbose_name=_('Business'))
     image = models.ImageField(upload_to='business_images/', verbose_name=_('Image'))
@@ -71,10 +81,11 @@ class BusinessImage(models.Model):
     def __str__(self):
         return f"Image for {self.business.name}"
 
+
 class Service(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='services', verbose_name=_('Business'))
     name = models.CharField(max_length=50, verbose_name=_('Service Name'))
-    icon = models.CharField(max_length=50, blank=True, null=True, verbose_name=_('Icon'), help_text=_('Font Awesome icon class, e.g., fa-bullseye'))
+    icon = models.CharField(max_length=50, blank=True, null=True, verbose_name=_('Icon'))
 
     class Meta:
         verbose_name = _('Service')
@@ -82,6 +93,7 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class BusinessHours(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='hours', verbose_name=_('Business'))
@@ -99,12 +111,15 @@ class BusinessHours(models.Model):
             return f"{self.days}: تعطیل"
         return f"{self.days}: {self.start_time}-{self.end_time}"
 
+
 class BusinessRating(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='ratings', verbose_name=_('Business'))
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name=_('User'))
     rating = models.FloatField(default=0.0, verbose_name=_('Rating'))
     comment = models.TextField(blank=True, null=True, verbose_name=_('Comment'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created At'))
+    edited_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Edited At'))
+    is_approved = models.BooleanField(default=False, verbose_name=_('Is Approved'))
 
     class Meta:
         verbose_name = _('Business Rating')
@@ -121,6 +136,7 @@ class BusinessRating(models.Model):
             self.rating = 5
         super().save(*args, **kwargs)
 
+
 class Conversation(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='conversations', verbose_name=_('Business'))
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='conversations', verbose_name=_('User'))
@@ -134,6 +150,7 @@ class Conversation(models.Model):
 
     def __str__(self):
         return f"Conversation between {self.user.username} and {self.business.name}"
+
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages', verbose_name=_('Conversation'))

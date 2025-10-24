@@ -1,0 +1,31 @@
+
+User-agent: *
+
+Allow: /about/
+Allow: /contact/
+Allow: /app/
+Allow: /app/download/
+
+Allow: /$
+Allow: /send/register/
+Allow: /
+
+Disallow: /admin/
+Disallow: /login
+Disallow: /registere/          
+Disallow: /profile/
+Disallow: /logout
+Disallow: /send/chat/
+Disallow: /send/business/*/review/edit/
+Disallow: /send/business/*/review/delete/
+
+Disallow: /*?*
+Disallow: /*.pdf$
+Disallow: /*.doc$
+
+Sitemap: https://koreh.ir/sitemap.xml
+
+User-agent: MJ12bot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+Disallow: /

@@ -5,16 +5,15 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models import Q, Count, Avg
 from django.utils.text import slugify
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.utils import timezone
 from .forms import (
     BusinessRegisterForm,
     BusinessImageForm,
-    ServiceForm,
-    BusinessHoursForm,
     BusinessRatingForm,
     MessageForm,
 )
 from .models import Business, BusinessImage, Service, BusinessHours, Category, BusinessRating, Conversation, Message
-import json
 
 @login_required
 def business_register_view(request):
@@ -28,14 +27,12 @@ def business_register_view(request):
             business.owner = request.user
             business.save()
 
-            # ذخیره خدمات
             services = request.POST.getlist('services')
             icons = request.POST.getlist('icons')
             for service_name, icon in zip(services, icons):
                 if service_name:
                     Service.objects.create(business=business, name=service_name, icon=icon)
 
-            # ذخیره ساعات کاری
             days_list = [
                 ('شنبه - چهارشنبه', 'weekday'),
                 ('پنجشنبه', 'thursday'),
@@ -45,22 +42,14 @@ def business_register_view(request):
                 start_time = request.POST.get(f'{prefix}_start')
                 end_time = request.POST.get(f'{prefix}_end')
                 is_closed = request.POST.get(f'{prefix}_closed') == 'on'
-                if not is_closed and start_time and end_time:
-                    BusinessHours.objects.create(
-                        business=business,
-                        days=days,
-                        start_time=start_time,
-                        end_time=end_time,
-                        is_closed=False
-                    )
-                else:
-                    BusinessHours.objects.create(
-                        business=business,
-                        days=days,
-                        is_closed=True
-                    )
+                BusinessHours.objects.create(
+                    business=business,
+                    days=days,
+                    start_time=start_time if not is_closed else None,
+                    end_time=end_time if not is_closed else None,
+                    is_closed=is_closed
+                )
 
-            # ذخیره تصاویر
             for file in files:
                 BusinessImage.objects.create(business=business, image=file)
 
@@ -141,29 +130,30 @@ def business_list_view(request):
 
 def business_detail_view(request, slug):
     business = get_object_or_404(Business, slug=slug, is_approved=True)
-    avg_rating = business.ratings.aggregate(Avg('rating'))['rating__avg'] or 0.0
-    rating_count = business.ratings.count()
+    
+    ratings = business.ratings.filter(is_approved=True)
+    avg_rating = ratings.aggregate(Avg('rating'))['rating__avg'] or 0.0
+    rating_count = ratings.count()
 
     rating_percentages = {}
     for i in range(1, 6):
-        count = business.ratings.filter(rating__gte=i - 0.5, rating__lt=i + 0.5).count()
+        count = ratings.filter(rating__gte=i - 0.5, rating__lt=i + 0.5).count()
         percentage = (count / rating_count * 100) if rating_count > 0 else 0
         rating_percentages[str(i)] = round(percentage, 1)
 
     similar_businesses = Business.objects.filter(
         category=business.category,
         is_approved=True
-    ).exclude(slug=slug).exclude(slug='')[:3]
+    ).exclude(slug=slug)[:3]
 
     for similar in similar_businesses:
-        similar.avg_rating = similar.ratings.aggregate(avg=Avg('rating'))['avg'] or 0
+        similar.avg_rating = similar.ratings.filter(is_approved=True).aggregate(avg=Avg('rating'))['avg'] or 0
 
     user_has_reviewed = False
+    user_review = None
     if request.user.is_authenticated:
-        user_has_reviewed = BusinessRating.objects.filter(
-            business=business, 
-            user=request.user
-        ).exists()
+        user_review = BusinessRating.objects.filter(business=business, user=request.user).first()
+        user_has_reviewed = user_review is not None
 
     return render(request, 'send/DETAIL.html', {
         'business': business,
@@ -172,10 +162,11 @@ def business_detail_view(request, slug):
         'hours': business.hours.all(),
         'avg_rating': avg_rating,
         'rating_count': rating_count,
-        'ratings': business.ratings.all().order_by('-created_at')[:3],
+        'ratings': ratings.order_by('-created_at'),
         'rating_percentages': rating_percentages,
         'similar_businesses': similar_businesses,
         'user_has_reviewed': user_has_reviewed,
+        'user_review': user_review,
     })
 
 @login_required
@@ -192,8 +183,9 @@ def add_review_view(request, slug):
             rating = form.save(commit=False)
             rating.business = business
             rating.user = request.user
+            rating.is_approved = False
             rating.save()
-            messages.success(request, _('نظر شما با موفقیت ثبت شد!'))
+            messages.success(request, _('نظر شما با موفقیت ثبت شد! پس از تأیید نمایش داده خواهد شد.'))
             return redirect('send:business_detail', slug=slug)
         else:
             messages.error(request, _('لطفاً خطاهای فرم را برطرف کنید'))
@@ -206,6 +198,37 @@ def add_review_view(request, slug):
     })
 
 @login_required
+@require_POST
+def edit_review_view(request, slug):
+    business = get_object_or_404(Business, slug=slug, is_approved=True)
+    rating_obj = get_object_or_404(BusinessRating, business=business, user=request.user)
+
+    rating = request.POST.get('rating')
+    comment = request.POST.get('comment', '').strip()
+
+    if not rating or not comment:
+        return JsonResponse({'status': 'error', 'message': 'امتیاز و نظر الزامی است.'}, status=400)
+
+    rating_obj.rating = float(rating)
+    rating_obj.comment = comment
+    rating_obj.is_approved = False
+    rating_obj.edited_at = timezone.now()
+    rating_obj.save()
+
+    return JsonResponse({
+        'status': 'success',
+        'message': 'نظر شما ویرایش شد و در انتظار تأیید است.'
+    })
+
+@login_required
+@require_POST
+def delete_review_view(request, slug):
+    business = get_object_or_404(Business, slug=slug, is_approved=True)
+    rating_obj = get_object_or_404(BusinessRating, business=business, user=request.user)
+    rating_obj.delete()
+    return JsonResponse({'status': 'success', 'message': 'نظر شما با موفقیت حذف شد.'})
+
+@login_required
 def chat_view(request, slug=None):
     is_owner = False
     selected_conversation = None
@@ -213,7 +236,6 @@ def chat_view(request, slug=None):
     business = None
 
     if slug:
-        # User is accessing chat from a specific business post
         business = get_object_or_404(Business, slug=slug, is_approved=True)
         conversation, created = Conversation.objects.get_or_create(
             business=business,
@@ -222,7 +244,6 @@ def chat_view(request, slug=None):
         selected_conversation = conversation
         messages = conversation.messages.all().select_related('sender')
     else:
-        # Check if user is an owner
         owned_businesses = Business.objects.filter(owner=request.user, is_approved=True)
         if owned_businesses.exists():
             is_owner = True
@@ -271,13 +292,12 @@ def chat_view(request, slug=None):
                 'errors': form.errors
             }, status=400)
 
-    # Load conversations based on user role
     if is_owner:
         conversations = Conversation.objects.filter(business__in=owned_businesses).select_related('business', 'user')
     else:
         conversations = Conversation.objects.filter(user=request.user).select_related('business')
 
-    return render(request, 'send/chat.html', {
+    return render(request, 'send/CHAT.html', {
         'business': business,
         'is_owner': is_owner,
         'selected_conversation': selected_conversation,
@@ -291,6 +311,7 @@ def get_messages(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
     if conversation.user != request.user and conversation.business.owner != request.user:
         return JsonResponse({'status': 'error', 'message': 'Access denied'}, status=403)
+    
     messages = conversation.messages.all().select_related('sender')
     
     messages_data = [
