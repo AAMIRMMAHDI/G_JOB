@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
@@ -93,3 +93,13 @@ def businesses_view(request):
         'businesses': businesses,
     }
     return render(request, 'accounts/businesses.html', context)
+
+def custom_logout_view(request):
+    """ویوی سفارشی برای لاگ‌اوت با امکان دیباگ"""
+    if request.method == 'POST':
+        print("Logout view called, user:", request.user)  # دیباگ
+        logout(request)
+        print("User logged out, is_authenticated:", request.user.is_authenticated)  # باید False باشد
+        messages.success(request, _('✅ با موفقیت خارج شدید!'))
+        return redirect('accounts:login')
+    return redirect('accounts:profile')

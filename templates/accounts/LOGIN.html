@@ -160,7 +160,6 @@
         border-color: rgba(49, 130, 206, 0.1);
     }
 
-    /* افکت جابجایی بین فرم‌ها */
     .form-wrapper {
         position: absolute;
         top: 0;
@@ -180,7 +179,6 @@
         position: relative;
     }
 
-    /* استایل برای فیلدهای Django forms */
     .errorlist {
         list-style: none;
         color: #e53e3e;
@@ -208,7 +206,6 @@
         margin-bottom: 0;
     }
 
-    /* دکمه بازگشت */
     .back-btn {
         position: absolute;
         top: 1.5rem;
@@ -228,7 +225,6 @@
         background: rgba(67, 97, 238, 0.05);
     }
 
-    /* نمایش دکمه بازگشت در حالت موبایل */
     @media (max-width: 768px) {
         .back-btn {
             display: block;
@@ -244,7 +240,6 @@
         }
     }
 
-    /* انیمیشن برای دکمه */
     @keyframes btnPulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.05); }
@@ -255,7 +250,6 @@
         animation: btnPulse 1.5s ease-in-out infinite;
     }
 
-    /* استایل برای فیلدهای خاص */
     .password-field {
         position: relative;
     }
@@ -277,7 +271,90 @@
         margin-bottom: 1.2rem;
     }
 
-    /* Responsive Design */
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .checkbox-label {
+        color: #2d3748;
+        font-size: 0.95rem;
+        font-family: 'Vazirmatn', sans-serif;
+    }
+
+    .terms-link {
+        color: #4361ee;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .terms-link:hover {
+        color: #3a0ca3;
+        text-decoration: underline;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        position: relative;
+        font-family: 'Vazirmatn', sans-serif;
+    }
+
+    .modal-content h3 {
+        font-size: 1.5rem;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .modal-content p {
+        color: #4a5568;
+        line-height: 1.8;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: #718096;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close-modal:hover {
+        color: #4361ee;
+    }
+
     @media (max-width: 480px) {
         .auth-page {
             padding: 1rem 0.5rem;
@@ -307,9 +384,13 @@
             padding: 0.8rem;
             font-size: 1rem;
         }
+
+        .modal-content {
+            padding: 1.5rem;
+            width: 95%;
+        }
     }
 
-    /* Dark mode support */
     @media (prefers-color-scheme: dark) {
         .auth-container {
             background: rgba(45, 55, 72, 0.95);
@@ -337,12 +418,24 @@
         .switch p {
             color: #a0aec0;
         }
+
+        .checkbox-label {
+            color: #e2e8f0;
+        }
+
+        .modal-content {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+
+        .modal-content p {
+            color: #a0aec0;
+        }
     }
 </style>
 
 <div class="auth-page">
     <div class="auth-container" id="authBox">
-        <!-- دکمه بازگشت برای موبایل -->
         <button class="back-btn" onclick="toggleForm('login')" id="backBtn">
             <i class="fas fa-arrow-right"></i>
         </button>
@@ -355,7 +448,6 @@
             </div>
         {% endif %}
 
-        <!-- فرم ورود -->
         <div id="loginForm" class="form-wrapper active">
             <h2>{% trans "ورود به حساب" %}</h2>
             <form method="post" action="{% url 'accounts:login' %}" id="loginFormElement">
@@ -408,7 +500,6 @@
             </div>
         </div>
 
-        <!-- فرم ثبت‌نام -->
         <div id="registerForm" class="form-wrapper">
             <h2>{% trans "ثبت‌نام" %}</h2>
             <form method="post" action="{% url 'accounts:register' %}" id="registerFormElement">
@@ -462,6 +553,14 @@
                     </div>
                 {% endif %}
                 
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms" class="checkbox-label">
+                        {% trans "قوانین و شرایط استفاده را می‌پذیرم" %}
+                        <a href="#" class="terms-link" onclick="openModal()">{% trans "مشاهده قوانین" %}</a>
+                    </label>
+                </div>
+                
                 <button type="submit" class="btn" id="registerBtn">
                     {% trans "ثبت‌نام" %}
                 </button>
@@ -469,6 +568,25 @@
             <div class="switch">
                 <p>{% trans "قبلاً ثبت‌نام کرده‌اید؟" %}</p>
                 <a href="#" onclick="toggleForm('login')">{% trans "ورود کنید" %}</a>
+            </div>
+        </div>
+
+        <div class="modal" id="termsModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+                <h3>{% trans "قوانین و شرایط استفاده" %}</h3>
+                <p>
+                    {% trans "ما در این پلتفرم متعهد به حفاظت از اطلاعات شخصی شما هستیم. تمامی داده‌هایی که شما در هنگام ثبت‌نام یا استفاده از خدمات ما ارائه می‌دهید، با بالاترین استانداردهای امنیتی ذخیره و محافظت می‌شوند. ما از فناوری‌های پیشرفته رمزنگاری استفاده می‌کنیم تا اطمینان حاصل کنیم که اطلاعات شما در برابر دسترسی‌های غیرمجاز محافظت شده است." %}
+                </p>
+                <p>
+                    {% trans "اطلاعات شما، از جمله نام، ایمیل، شماره تلفن و سایر داده‌های شخصی، هرگز بدون رضایت صریح شما با اشخاص ثالث به اشتراک گذاشته نخواهد شد، مگر در مواردی که قانوناً الزام‌آور باشد یا برای ارائه خدمات مورد نیاز باشد. ما به حریم خصوصی شما احترام می‌گذاریم و تمام تلاش خود را برای ایجاد محیطی امن و قابل اعتماد به کار می‌گیریم." %}
+                </p>
+                <p>
+                    {% trans "با پذیرش این شرایط، شما موافقت می‌کنید که از خدمات ما به‌صورت مسئولانه استفاده کنید و از هرگونه فعالیت غیرقانونی یا نقض حقوق دیگران خودداری کنید. ما حق داریم در صورت نقض این شرایط، دسترسی شما به پلتفرم را محدود یا قطع کنیم. هدف ما ارائه تجربه‌ای امن، شفاف و کاربرپسند است و از شما دعوت می‌کنیم تا با اطمینان کامل به ما بپیوندید." %}
+                </p>
+                <p>
+                    {% trans "اگر سؤالی درباره نحوه مدیریت اطلاعات یا شرایط استفاده دارید، تیم پشتیبانی ما همیشه آماده پاسخگویی به شماست. ما متعهد به ایجاد فضایی هستیم که در آن کاربران بتوانند با خیال راحت از خدمات ما استفاده کنند و تجربه‌ای مثبت داشته باشند." %}
+                </p>
             </div>
         </div>
     </div>
@@ -510,7 +628,14 @@
         }
     }
 
-    // افزودن loading state به دکمه‌ها
+    function openModal() {
+        document.getElementById('termsModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('termsModal').style.display = 'none';
+    }
+
     document.getElementById('loginFormElement').addEventListener('submit', function() {
         const btn = document.getElementById('loginBtn');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "در حال ورود..." %}';
@@ -529,7 +654,6 @@
         const activeForm = document.querySelector('.form-wrapper.active');
         document.getElementById('authBox').style.height = activeForm.scrollHeight + 'px';
         
-        // تنظیم خودکار ارتفاع بر اساس محتوا
         const authBox = document.getElementById('authBox');
         const observer = new ResizeObserver(entries => {
             for (let entry of entries) {
@@ -543,7 +667,6 @@
         observer.observe(authBox);
     };
 
-    // بستن فرم ثبت‌نام با کلیک روی دکمه بازگشت در موبایل
     document.getElementById('backBtn').addEventListener('click', function() {
         toggleForm('login');
     });
